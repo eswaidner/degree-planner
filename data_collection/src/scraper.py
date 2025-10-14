@@ -62,27 +62,28 @@ def fetchCourses():
 
         finishedCount = 0
         for coid in coids:
-            resp = requests.get(f'{courseUrl}{coid}')
+            try:
+                content = requests.get(f'{courseUrl}{coid}').text
+                soup = BeautifulSoup(content, 'html.parser')
 
-            content = resp.text
-            soup = BeautifulSoup(content, 'html.parser')
+                titleHeader = soup.select_one("#course_preview_title")
+                titleElements = titleHeader.text.split("\xa0-\xa0")
+                credits = titleHeader.next.next.text
+                description = titleHeader.parent.select_one("hr").next.text
 
-            course = {}
+                course = {}
+                course["prefix"] = titleElements[0]
+                course["name"] = titleElements[1]
+                course["credits"] = float(credits)
+                course["description"] = description
 
-            titleHeader = soup.select_one("#course_preview_title")
-            titleElements = titleHeader.text.split("\xa0-\xa0")
-            credits = titleHeader.next.next.text
-            description = titleHeader.parent.select_one("hr").next.text
+                courses.append(course)
 
-            course["prefix"] = titleElements[0]
-            course["name"] = titleElements[1]
-            course["credits"] = int(credits)
-            course["description"] = description
-
-            courses.append(course)
+                print(f"[{finishedCount+1}] {course["prefix"]} - {course["name"]}")
+            except:
+                print(f"ERROR: failed to process course {finishedCount+1} (coid: {coid})")
 
             finishedCount += 1
-            print(f"[{finishedCount}] {course["prefix"]} - {course["name"]}")
             progress.update(task, advance=1)
 
             # randomized delay between requests
