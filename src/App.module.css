@@ -1,0 +1,8 @@
+/* This is a CSS module. These styles only apply when the
+module is directly imported and used in a component and will
+not conflict with styles from other css files. */
+
+/* Styles in CSS modules should use camelCase names for TS compatability */
+
+.app {
+}

@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState, useRef } from "react";
+// import { useGlobalStore } from "./state";
+import css from "./App.module.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+// This is the root component of our app
+export default function App() {
+  // We can import and call the useGlobalStore hook to get global fields/actions
+  // const exampleField = useGlobalStore((state) => state.exampleField);
+  // const exampleAction = useGlobalStore((state) => state.exampleAction);
+  // exampleAction();
 
+  const title = "Degree Planner";
+
+  // The useState hook is how we can use reactive local state
+  // const [localState, setLocalState] = useState<string>("");
+  //       |value      |update fn                |type   |default value
+
+  // The useRef hook is how we can use local state that does NOT trigger reactive updates
+  // const ref = useRef<string>("");
+  //      |value       |type   |default value
+
+  // Components return 'tsx', which is an HTML templating language
+  // The syntax is very similar to HTML
+  // TypeScript expressions can be embedded within {} scopes, like 'title' below
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // This is how you apply a style from a css module to an element
+    <div className={css.app}>
+      <div>Title: {title}</div>
+    </div>
+  );
 }
-
-export default App
