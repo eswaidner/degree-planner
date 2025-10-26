@@ -2,6 +2,15 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 // data structures go here
+export interface Class {
+  number: string;
+  name: string;
+  description: string;
+  credits: number;
+  prereqs: string[][]; // [[a OR b OR c] AND [d OR e]]
+  coreqs: string[][];
+  offered: "fall" | "spring" | "always" | "rarely" | "unknown";
+}
 
 /** Structure of the global state store */
 export interface State {
