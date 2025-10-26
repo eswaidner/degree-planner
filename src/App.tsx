@@ -1,7 +1,7 @@
 // import { useState, useRef } from "react";
 // import { useGlobalStore } from "./state";
 import './index.css';
-import css from "./App.module.css";
+import css from "./styles/App.module.css";
 import DegreePlanner from './containers/DegreePlanner';
 import ClassSection from './containers/ClassSection';
 
