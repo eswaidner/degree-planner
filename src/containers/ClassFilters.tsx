@@ -1,5 +1,5 @@
 import React from 'react';
-import css from "./../App.module.css";
+import css from "./../styles/ClassSection.module.css";
 
 const ClassFilters: React.FC = () => {
     return (

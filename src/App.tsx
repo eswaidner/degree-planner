@@ -12,7 +12,7 @@ export default function App() {
   // const exampleAction = useGlobalStore((state) => state.exampleAction);
   // exampleAction();
 
-  const title = "Degree Planner";
+  //const title = "Degree Planner";
 
   // The useState hook is how we can use reactive local state
   // const [localState, setLocalState] = useState<string>("");
