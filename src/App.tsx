@@ -1,6 +1,9 @@
 // import { useState, useRef } from "react";
 // import { useGlobalStore } from "./state";
-import css from "./App.module.css";
+import './index.css';
+import css from "./styles/App.module.css";
+import DegreePlanner from './containers/DegreePlanner';
+import ClassSection from './containers/ClassSection';
 
 // This is the root component of our app
 export default function App() {
@@ -9,7 +12,7 @@ export default function App() {
   // const exampleAction = useGlobalStore((state) => state.exampleAction);
   // exampleAction();
 
-  const title = "Degree Planner";
+  //const title = "Degree Planner";
 
   // The useState hook is how we can use reactive local state
   // const [localState, setLocalState] = useState<string>("");
@@ -25,7 +28,8 @@ export default function App() {
   return (
     // This is how you apply a style from a css module to an element
     <div className={css.app}>
-      <div>Title: {title}</div>
+      <DegreePlanner />
+      <ClassSection />
     </div>
   );
 }
