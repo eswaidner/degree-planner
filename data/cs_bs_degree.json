@@ -2,8 +2,8 @@
   "name": "Computer Science",
   "type": "BS",
   "minCredits": 120,
-  "reqs": {
-    "Computer Science Courses": {
+  "reqs": [
+    {
       "name": "Computer Science Courses",
       "classes": [
         ["CS 1150"],
@@ -22,18 +22,18 @@
         ["CS 4720"]
       ]
     },
-    "Specialty Area": {
+    {
       "name": "Specialty Area",
       "classes": [
         { "totalCredits": 6, "prefixes": ["CS"], "atOrAbove": 3000 },
         { "totalCredits": 6, "prefixes": ["CS"], "atOrAbove": 4000 }
       ]
     },
-    "Core Writing Requirement": {
+    {
       "name": "Core Writing Requirement",
       "classes": [["ENGL 1310"], ["TCID 2080"], ["PORT 3000"]]
     },
-    "Mathematics": {
+    {
       "name": "Mathematics",
       "classes": [
         ["MATH 1350"],
@@ -43,7 +43,7 @@
         ["CS 2300", "MATH 3130"]
       ]
     },
-    "Basic Science": {
+    {
       "name": "Basic Science",
       "classes": [
         ["CHEM 1401"],
@@ -55,7 +55,7 @@
         ["PES 1160"]
       ]
     },
-    "Compass Curriculum": {
+    {
       "name": "Compass Curriculum",
       "classes": [
         ["AH 1000"],
@@ -69,9 +69,9 @@
         ["GES 3920"]
       ]
     },
-    "General Electives": {
+    {
       "name": "General Electives",
       "classes": [{ "totalCredits": 24, "prefixes": [], "atOrAbove": 1000 }]
     }
-  }
+  ]
 }

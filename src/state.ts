@@ -17,7 +17,7 @@ export interface Degree {
   name: string;
   type: DegreeType;
   minCredits: number;
-  reqs: Record<string, DegreeRequirement>;
+  reqs: DegreeRequirement[];
 }
 
 export type DegreeType = "BS" | "BA" | "BI";
