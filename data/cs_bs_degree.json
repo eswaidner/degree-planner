@@ -1,0 +1,77 @@
+{
+  "name": "Computer Science",
+  "type": "BS",
+  "minCredits": 120,
+  "reqs": {
+    "Computer Science Courses": {
+      "name": "Computer Science Courses",
+      "classes": [
+        ["CS 1150"],
+        ["CS 1450"],
+        ["CS 2060"],
+        ["CS 2080"],
+        ["CS 2160"],
+        ["CS 3050"],
+        ["CS 3020", "CS 3060", "CS 3080"],
+        ["CS 3160"],
+        ["CS 3300"],
+        ["CS 4200"],
+        ["CS 4220"],
+        ["CS 4300"],
+        ["CS 4500"],
+        ["CS 4720"]
+      ]
+    },
+    "Specialty Area": {
+      "name": "Specialty Area",
+      "classes": [
+        { "totalCredits": 6, "prefixes": ["CS"], "atOrAbove": 3000 },
+        { "totalCredits": 6, "prefixes": ["CS"], "atOrAbove": 4000 }
+      ]
+    },
+    "Core Writing Requirement": {
+      "name": "Core Writing Requirement",
+      "classes": [["ENGL 1310"], ["TCID 2080"], ["PORT 3000"]]
+    },
+    "Mathematics": {
+      "name": "Mathematics",
+      "classes": [
+        ["MATH 1350"],
+        ["MATH 1360"],
+        ["CS 2020", "MATH 1350", "ECE 3610"],
+        ["CS 2150", "MATH 2150"],
+        ["CS 2300", "MATH 3130"]
+      ]
+    },
+    "Basic Science": {
+      "name": "Basic Science",
+      "classes": [
+        ["CHEM 1401"],
+        ["CHEM 1402"],
+        ["CHEM 1411"],
+        ["CHEM 1412"],
+        ["PES 1110"],
+        ["PES 1120"],
+        ["PES 1160"]
+      ]
+    },
+    "Compass Curriculum": {
+      "name": "Compass Curriculum",
+      "classes": [
+        ["AH 1000"],
+        ["ANTH 1020"],
+        ["PES 1110"],
+        ["PHIL 3050"],
+        ["CS 4300"],
+        ["CS 3050"],
+        ["AH 3860"],
+        ["DNCE 2770"],
+        ["GES 3920"]
+      ]
+    },
+    "General Electives": {
+      "name": "General Electives",
+      "classes": [{ "totalCredits": 24, "prefixes": [], "atOrAbove": 1000 }]
+    }
+  }
+}

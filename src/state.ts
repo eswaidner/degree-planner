@@ -1,15 +1,41 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// data structures go here
+/** Class listing */
 export interface Class {
   number: string;
   name: string;
   description: string;
   credits: number;
-  prereqs: string;
-  coreqs: string;
+  prereqs: string | null;
+  coreqs: string | null;
   offered: "fall" | "spring" | "always" | "rarely" | "unknown";
+}
+
+/** Collection of degree requirements and metadata */
+export interface Degree {
+  name: string;
+  type: DegreeType;
+  minCredits: number;
+  reqs: Record<string, DegreeRequirement>;
+}
+
+export type DegreeType = "BS" | "BA" | "BI";
+
+/** Collection of required classes and class ranges */
+export interface DegreeRequirement {
+  name: string;
+  classes: (ClassSet | ClassScope)[];
+}
+
+/** ["CS 3300", "CS 4800"] encodes "CS 3300 or CS 4800" */
+export type ClassSet = string[];
+
+/** Range of classes based on prefixes and a minimum level */
+export interface ClassScope {
+  totalCredits: number;
+  prefixes: string[]; // ["CS"]
+  atOrAbove: number; // 3000
 }
 
 /** Structure of the global state store */
