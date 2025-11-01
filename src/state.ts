@@ -7,8 +7,8 @@ export interface Class {
   name: string;
   description: string;
   credits: number;
-  prereqs: string[][]; // [[a OR b OR c] AND [d OR e]]
-  coreqs: string[][];
+  prereqs: string;
+  coreqs: string;
   offered: "fall" | "spring" | "always" | "rarely" | "unknown";
 }
 

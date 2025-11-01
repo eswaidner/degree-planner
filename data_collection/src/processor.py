@@ -10,9 +10,11 @@ def parseClass(c):
     # only include 4000 and below classes in data set
     if int(c["prefix"].split(" ")[1][0]) > 4: return None
 
-    prereqs = []
-    coreqs = []
+    prereqs = None
+    coreqs = None
     offered = "always"
+
+    descEndIdx = len(c['description'])
 
     prerPrefix = "Prer., "
     prerStartIdx = c["description"].find(prerPrefix)
@@ -20,11 +22,8 @@ def parseClass(c):
         start = prerStartIdx+len(prerPrefix)
         end = c["description"][start:].find(".") + start
         if end < start: end = len(c["description"])
-        prerStrs = c["description"][start:end]
-        # print(prerStrs)
-
-        #TODO parse prereq list
-
+        prereqs = c["description"][start:end]
+        descEndIdx = prerStartIdx
 
     coreqPrefix = "Coreq., "
     coreqStartIdx = c["description"].find(coreqPrefix)
@@ -32,10 +31,8 @@ def parseClass(c):
         start = coreqStartIdx+len(coreqPrefix)
         end = c["description"][start:].find(".") + start
         if end < start: end = len(c["description"])
-        coreqStrs = c["description"][start:end]
-        print(coreqStrs)
-
-        #TODO parse coreq list
+        coreqs = c["description"][start:end]
+        descEndIdx = min(descEndIdx, coreqStartIdx)
 
     offeredPrefix = "Course typically offered: "
     offeredStartIdx = c["description"].find(offeredPrefix)
@@ -49,7 +46,7 @@ def parseClass(c):
     return {
         "number": c["prefix"],
         "name": c["name"],
-        "description": c["description"],
+        "description": c["description"][:descEndIdx].strip(),
         "credits": c["credits"],
         "prereqs": prereqs,
         "coreqs": coreqs,
