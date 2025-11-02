@@ -1,6 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import classesJson from "../data/classes.json";
+export const classes = classesJson as Record<string, Class>;
+
+import degreeJson from "../data/cs_bs_degree.json";
+export const degree = degreeJson as Degree;
+
 /** Class listing */
 export interface Class {
   number: string;
@@ -43,6 +49,9 @@ export interface State {
   //TODO add fields and action functions
   // exampleField: string,
   // exampleAction: () => void,
+
+  hoveredClass: string | null;
+  setHoveredClass: (cls: string | null) => void;
 }
 
 /** Hook that reads a field from the global store.
@@ -53,6 +62,9 @@ export const useGlobalStore = create<State>()(
       //TODO define initial values for state fields and implementations for action functions
       // exampleField: "example",
       // exampleAction: () => {}
+
+      hoveredClass: null,
+      setHoveredClass: (cls) => set(() => ({ hoveredClass: cls })),
     }),
     {
       name: "globalStore",

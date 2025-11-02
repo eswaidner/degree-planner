@@ -1,9 +1,9 @@
 // import { useState, useRef } from "react";
 // import { useGlobalStore } from "./state";
-import './index.css';
+import "./index.css";
 import css from "./styles/App.module.css";
-import DegreePlanner from './containers/DegreePlanner';
-import ClassSection from './containers/ClassSection';
+import DegreePlanner from "./containers/DegreePlanner";
+import ClassBrowser from "./containers/ClassBrowser";
 
 // This is the root component of our app
 export default function App() {
@@ -29,7 +29,7 @@ export default function App() {
     // This is how you apply a style from a css module to an element
     <div className={css.app}>
       <DegreePlanner />
-      <ClassSection />
+      <ClassBrowser />
     </div>
   );
 }

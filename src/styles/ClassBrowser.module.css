@@ -1,0 +1,74 @@
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--fg-0);
+  padding: 10px;
+  max-width: 35vw;
+  min-width: 35vw;
+}
+
+.top {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  background-color: var(--bg-0);
+  margin: 5px 0px;
+  max-height: 70vh;
+  min-height: 70vh;
+}
+
+.search {
+  flex: 1;
+  background-color: var(--bg-3);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+}
+
+.searchBar {
+  min-height: 1.75rem;
+  margin-bottom: 5px;
+}
+
+.searchResults {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid var(--bg-2);
+  padding: 3px;
+  overflow-y: auto;
+}
+
+.classThumbnail {
+  min-height: 1.25rem;
+  display: block;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-color: var(--bg-0);
+}
+
+.classThumbnail:hover {
+  border-color: var(--hl-0);
+}
+
+.filters {
+  flex: 1;
+  background-color: var(--bg-2);
+  padding: 10px;
+}
+
+.display {
+  flex-grow: 1;
+  background-color: var(--bg-0);
+  padding: 10px;
+  margin: 5px 0px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
