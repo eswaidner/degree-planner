@@ -19,7 +19,7 @@ export default function ClassSearch() {
         minMatchCharLength: 2,
         threshold: 0.1,
       }),
-    [classes]
+    [],
   );
 
   useEffect(() => {
@@ -69,7 +69,9 @@ function ClassThumbnail({ cls }: ClassThumbnailProps) {
   return (
     <button
       className={css.classThumbnail}
-      onPointerEnter={() => setHoveredClass(cls.number)}
+      onPointerEnter={() => {
+        setHoveredClass(cls.number);
+      }}
     >
       {cls.number} - {cls.name}
     </button>

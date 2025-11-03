@@ -74,6 +74,6 @@ export const useGlobalStore = create<State>()(
         // define persistent fields
         // exampleField: state.exampleField,
       }),
-    }
-  )
+    },
+  ),
 );
