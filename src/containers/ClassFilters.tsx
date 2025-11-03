@@ -1,12 +1,5 @@
-import React from 'react';
-import css from "./../styles/ClassSection.module.css";
+import css from "./../styles/ClassBrowser.module.css";
 
-const ClassFilters: React.FC = () => {
-    return (
-        <div className = {css.classFilter}>
-            <h2>Filters</h2>
-        </div>
-    );
+export default function ClassFilters() {
+  return <div className={css.filters}></div>;
 }
-
-export default ClassFilters;
