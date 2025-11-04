@@ -10,6 +10,13 @@
   background-color: var(--bg-0);
   padding: 10px;
   margin: 5px 0px; /* top/bottom, left/right */
+  display: flex; /* display in 1 line */
+  align-items: center; /* vertical center */
+}
+
+.btnBarButtons {
+  /* inherits changes from button in index.css */
+  margin: 4px;
 }
 
 /* Yearly Schedule CSS */
