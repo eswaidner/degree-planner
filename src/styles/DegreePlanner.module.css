@@ -6,7 +6,7 @@
 }
 
 /* Button Bar CSS */
-.degreePlannerContainer .buttonBar {
+.buttonBar {
   background-color: var(--bg-0);
   padding: 10px;
   margin: 5px 0px; /* top/bottom, left/right */
@@ -20,7 +20,7 @@
 }
 
 /* Yearly Schedule CSS */
-.degreePlannerContainer .yearlySchedule {
+.yearlySchedule {
   display: flex;
   flex-direction: row;
   background-color: var(--bg-0);
@@ -30,7 +30,7 @@
 }
 
 /* Year CSS */
-.degreePlannerContainer .yearlySchedule .year {
+.year {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -40,7 +40,7 @@
 }
 
 /* Year Header CSS */
-.degreePlannerContainer .yearlySchedule .year .header {
+.year .header {
   display: flex;
   flex-direction: row;
   background-color: var(--bg-3);
@@ -50,7 +50,7 @@
 }
 
 /* Semester CSS */
-.degreePlannerContainer .yearlySchedule .year .semester {
+.semester {
   display: flex;
   flex-direction: column;
   gap: 5px;

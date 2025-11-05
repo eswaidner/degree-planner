@@ -8,13 +8,6 @@ function AddClassBtn() {
   return <button onClick={handleClick}>+ Add Class</button>;
 }
 
-function RemoveYearBtn() {
-  function handleClick() {
-    alert("Remove Year Button CLicked");
-  }
-  return <button onClick={handleClick}>-</button>;
-}
-
 function Semester() {
   return (
     <div className={css.semester}>
@@ -33,7 +26,6 @@ function YearHeader() {
       <h2>
         <center>2024</center>
       </h2>
-      <RemoveYearBtn />
     </div>
   );
 }
