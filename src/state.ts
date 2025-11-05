@@ -44,11 +44,22 @@ export interface ClassScope {
   atOrAbove: number; // 3000
 }
 
+/** Where a class is located in degree plan */ 
+export interface ClassSlot { 
+	classId: string // "CS 3300" 
+	auditSemester: string | null // "FA24" 
+}
+
 /** Structure of the global state store */
 export interface State {
   //TODO add fields and action functions
   // exampleField: string,
   // exampleAction: () => void,
+
+  numYears: number, //how many years in degree plan, index of last year??
+  startYear: number, //ex. 2024 
+
+  classSlots: (ClassSlot | null)[],  
 
   hoveredClass: string | null;
   setHoveredClass: (cls: string | null) => void;
@@ -62,6 +73,11 @@ export const useGlobalStore = create<State>()(
       //TODO define initial values for state fields and implementations for action functions
       // exampleField: "example",
       // exampleAction: () => {}
+      
+      numYears: 3, 
+      startYear: 0,
+
+      classSlots: Array(48).fill(null), 
 
       hoveredClass: null,
       setHoveredClass: (cls) => set(() => ({ hoveredClass: cls })),
