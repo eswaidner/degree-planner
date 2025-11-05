@@ -55,7 +55,7 @@ body {
   display: flex;
 }
 
-button {
+button, .btn {
   all: unset;
   border: 1px solid var(--hl-0);
   background-color: var(--bg-0);

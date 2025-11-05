@@ -1,57 +1,50 @@
-import React from 'react';
+import React from "react";
 import css from "./../styles/DegreePlanner.module.css";
-
-function UploadDegreeBtn() {
-    function handleClick() {
-        alert('Upload Degree Audit button clicked');
-    }
-    return (
-        <button onClick={handleClick}>
-            + Upload Degree Audit
-        </button>
-    )
-}
+import UploadDegreeBtn from "./UploadFileBtn";
 
 function SelectDegreeBtn() {
-    // function handleClick() {
-    //     alert('Export Degree Plan button clicked');
-    // }
-    // return (
-    //     // <button class="dropdown" onClick={handleClick}>Degree: Undeclared</button>
-    //     // <div>
-    //     //     <p></p>
-    //     // </div>
-    // )
+  return (
+    <button className={`btn ${css.btnBarButtons}`}>
+      Degree: Computer Science (BS)
+    </button>
+  );
 }
 
 function ExportPlanBtn() {
-    function handleClick() {
-        alert('Export Degree Plan button clicked');
-    }
-    return (
-        <button onClick={handleClick}>
-            Export Plan
-        </button>
-    )
+  function handleClick() {
+    alert("Export Degree Plan button clicked");
+  }
+  return (
+    <button onClick={handleClick} className={`btn ${css.btnBarButtons}`}>
+      Export Plan
+    </button>
+  );
 }
 
 function ResetBtn() {
-    function handleClick() {
-        alert('Reset button clicked');
-    }
-    return (
-        <button onClick={handleClick}>
-            Reset
-        </button>
-    )
+  function handleClick() {
+    alert("Reset button clicked");
+  }
+  return (
+    <button onClick={handleClick} className={`btn ${css.btnBarButtons}`}>
+      Reset
+    </button>
+  );
 }
 
 const ButtonBar: React.FC = () => {
-    return (
-        <div className = {css.buttonBar}>
-            <UploadDegreeBtn /> <ExportPlanBtn /> <ResetBtn />
-        </div>
-    );
-}
+  return (
+    <div className={css.buttonBar}>
+      <UploadDegreeBtn
+        onFileSelected={(file) => {
+          console.log("File:", file);
+        }}
+      />
+      <SelectDegreeBtn />
+      <ExportPlanBtn />
+      <ResetBtn />
+    </div>
+  );
+};
 
 export default ButtonBar;
