@@ -7,6 +7,10 @@ export const classes = classesJson as Record<string, Class>;
 import degreeJson from "../data/cs_bs_degree.json";
 export const degree = degreeJson as Degree;
 
+const DEFAULT_NUM_YEARS = 4;
+const CLASS_SLOTS_PER_SEMESTER = 6;
+const CLASS_SLOTS_PER_YEAR = CLASS_SLOTS_PER_SEMESTER * 2;
+
 /** Class listing */
 export interface Class {
   number: string;
@@ -44,25 +48,37 @@ export interface ClassScope {
   atOrAbove: number; // 3000
 }
 
-/** Where a class is located in degree plan */ 
-export interface ClassSlot { 
-	classId: string // "CS 3300" 
-	auditSemester: string | null // "FA24" 
+/** Where a class is located in degree plan */
+export interface ClassSlot {
+  classId: string; // "CS 3300"
+  auditSemester: string | null; // "FA24"
 }
 
 /** Structure of the global state store */
 export interface State {
-  //TODO add fields and action functions
-  // exampleField: string,
-  // exampleAction: () => void,
+  numYears: number;
+  startYear: number; //ex. 2024
 
-  numYears: number, //how many years in degree plan, index of last year??
-  startYear: number, //ex. 2024 
+  /** Appends a year to the end of the degree plan */
+  addYear: () => void;
 
-  classSlots: (ClassSlot | null)[],  
+  /** Removes a year from the end of the degree plan */
+  removeYear: () => void;
 
+  /** Class slot values by year and semester, index = (12 * yearIdx) + (6 * semesterIdx) */
+  classSlots: (ClassSlot | null)[];
+  setClassSlot: (slotIndex: number, value: ClassSlot | null) => void;
+
+  /** The current or most recently hovered class */
   hoveredClass: string | null;
-  setHoveredClass: (cls: string | null) => void;
+  setHoveredClass: (value: string | null) => void;
+
+  /** The current class selected to add to the degree plan */
+  classToAdd: string | null;
+  setClassToAdd: (value: string | null) => void;
+
+  /** Resets the degree plan, preserving degree audit imports if applicable */
+  resetDegreePlan: () => void;
 }
 
 /** Hook that reads a field from the global store.
@@ -70,25 +86,85 @@ export interface State {
 export const useGlobalStore = create<State>()(
   persist(
     (set, get) => ({
-      //TODO define initial values for state fields and implementations for action functions
-      // exampleField: "example",
-      // exampleAction: () => {}
-      
-      numYears: 3, 
-      startYear: 0,
+      numYears: DEFAULT_NUM_YEARS,
+      startYear: new Date().getFullYear(),
 
-      classSlots: Array(48).fill(null), 
+      addYear: () => {
+        return set((s) => {
+          const newClassSlots = [
+            ...s.classSlots,
+            ...Array<ClassSlot | null>(CLASS_SLOTS_PER_YEAR).fill(null),
+          ];
+          return { numYears: s.numYears + 1, classSlots: newClassSlots };
+        });
+      },
+
+      removeYear: () => {
+        return set((s) => {
+          const newClassSlots = [...s.classSlots];
+          newClassSlots.splice(s.classSlots.length - CLASS_SLOTS_PER_YEAR);
+          return { numYears: s.numYears - 1, classSlots: newClassSlots };
+        });
+      },
+
+      classSlots: Array<ClassSlot | null>(
+        CLASS_SLOTS_PER_YEAR * DEFAULT_NUM_YEARS,
+      ).fill(null),
+
+      setClassSlot: (slotIndex, value) => {
+        return set((s) => {
+          const newClassSlots = [...s.classSlots];
+          newClassSlots[slotIndex] = value;
+          return { classSlots: newClassSlots };
+        });
+      },
 
       hoveredClass: null,
-      setHoveredClass: (cls) => set(() => ({ hoveredClass: cls })),
+      setHoveredClass: (value) => set(() => ({ hoveredClass: value })),
+
+      classToAdd: null,
+      setClassToAdd: (value) => set(() => ({ classToAdd: value })),
+
+      resetDegreePlan: () => {
+        return set((s) => {
+          const newClassSlots = [...s.classSlots];
+
+          // reset years, adding/removing class slots
+          //TODO if degree audit uploaded, reset num years to what degree audit
+          const yearsRemoved = s.numYears - DEFAULT_NUM_YEARS;
+          if (yearsRemoved > 0) {
+            newClassSlots.splice(
+              newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved,
+            );
+          } else if (yearsRemoved < 0) {
+            newClassSlots.push(
+              ...Array<ClassSlot | null>(
+                CLASS_SLOTS_PER_YEAR * yearsRemoved,
+              ).fill(null),
+            );
+          }
+
+          // reset class slots that are not imported from a degree audit
+          for (let i = 0; i < newClassSlots.length; i++) {
+            if (!newClassSlots[i]?.auditSemester) {
+              newClassSlots[i] = null;
+            }
+          }
+
+          return { numYears: DEFAULT_NUM_YEARS, classSlots: newClassSlots };
+        });
+      },
     }),
+
     {
       name: "globalStore",
-      version: 0, // increment this every state-breaking change (invalidates cache)
+      version: 1, // increment this every state-breaking change (invalidates cache)
 
       partialize: (state) => ({
         // define persistent fields
-        // exampleField: state.exampleField,
+        numYears: state.numYears,
+        startYear: state.startYear,
+        classSlots: state.classSlots,
       }),
     },
   ),
