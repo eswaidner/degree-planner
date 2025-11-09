@@ -6,6 +6,8 @@
   padding: 10px;
   max-width: 35vw;
   min-width: 35vw;
+  max-height: 100vh;
+  min-height: 100vh;
 }
 
 .top {
