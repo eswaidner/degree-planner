@@ -53,7 +53,9 @@ export default function ClassSearch() {
       <div className={css.searchResults}>
         {searchResults.length > 0 || searchString
           ? searchResults.map((r) => <ClassThumbnail cls={r.item} />)
-          : Object.values(classes).map((c) => <ClassThumbnail cls={c} />)}
+          : Object.values(classes).map((c, i) => (
+              <ClassThumbnail key={i} cls={c} />
+            ))}
       </div>
     </div>
   );
@@ -64,13 +66,17 @@ interface ClassThumbnailProps {
 }
 
 function ClassThumbnail({ cls }: ClassThumbnailProps) {
-  const setHoveredClass = useGlobalStore((s) => s.setHoveredClass);
+  const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
+  const setClassToAdd = useGlobalStore((s) => s.setClassToAdd);
 
   return (
     <button
       className={css.classThumbnail}
-      onPointerEnter={() => {
-        setHoveredClass(cls.number);
+      onClick={() => {
+        setSelectedClass(cls.number);
+      }}
+      onDoubleClick={() => {
+        setClassToAdd(cls.number);
       }}
     >
       {cls.number} - {cls.name}

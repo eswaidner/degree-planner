@@ -6,6 +6,8 @@
   padding: 10px;
   max-width: 35vw;
   min-width: 35vw;
+  max-height: 100vh;
+  min-height: 100vh;
 }
 
 .top {
@@ -56,6 +58,10 @@
   border-color: var(--hl-0);
 }
 
+.classThumbnailSelected {
+  border-color: var(--hl-1);
+}
+
 .filters {
   flex: 1;
   background-color: var(--bg-2);
@@ -71,4 +77,17 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.addButton {
+  border: 1px solid var(--hl-1);
+  max-width: 125px;
+}
+
+.addButton:hover {
+  opacity: 0.8;
+}
+
+.addButton:active {
+  opacity: 0.65;
 }
