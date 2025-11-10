@@ -69,9 +69,9 @@ export interface State {
   classSlots: (ClassSlot | null)[];
   setClassSlot: (slotIndex: number, value: ClassSlot | null) => void;
 
-  /** The current or most recently hovered class */
-  hoveredClass: string | null;
-  setHoveredClass: (value: string | null) => void;
+  /** The current selected class */
+  selectedClass: string | null;
+  setSelectedClass: (value: string | null) => void;
 
   /** The current class selected to add to the degree plan */
   classToAdd: string | null;
@@ -119,8 +119,11 @@ export const useGlobalStore = create<State>()(
         });
       },
 
-      hoveredClass: null,
-      setHoveredClass: (value) => set(() => ({ hoveredClass: value })),
+      selectedClass: null,
+      setSelectedClass: (value) => {
+        get().setClassToAdd(null);
+        return set(() => ({ selectedClass: value }));
+      },
 
       classToAdd: null,
       setClassToAdd: (value) => set(() => ({ classToAdd: value })),
