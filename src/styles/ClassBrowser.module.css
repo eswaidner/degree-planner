@@ -2,7 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: var(--fg-0);
+  /* background-color: var(--fg-0); */
   padding: 10px;
   max-width: 35vw;
   min-width: 35vw;
@@ -14,7 +14,7 @@
   flex: 1;
   display: flex;
   flex-direction: row;
-  background-color: var(--bg-0);
+  /* background-color: var(--bg-0); */
   margin: 5px 0px;
   max-height: 70vh;
   min-height: 70vh;
@@ -22,7 +22,7 @@
 
 .search {
   flex: 1;
-  background-color: var(--bg-3);
+  background-color: var(--fg-1);
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -51,12 +51,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-color: var(--bg-0);
+  /* border-color: var(--bg-0); */
 }
 
-.classThumbnail:hover {
+/* Moved to be inherited code in index.css */
+/* .classThumbnail:hover {
   border-color: var(--hl-0);
-}
+} */
 
 .classThumbnailSelected {
   border-color: var(--hl-1);
@@ -64,13 +65,13 @@
 
 .filters {
   flex: 1;
-  background-color: var(--bg-2);
+  background-color: var(--fg-1);
   padding: 10px;
 }
 
 .display {
   flex-grow: 1;
-  background-color: var(--bg-0);
+  background-color: var(--fg-1);
   padding: 10px;
   margin: 5px 0px;
   overflow-y: auto;

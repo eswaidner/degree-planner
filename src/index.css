@@ -17,6 +17,8 @@ CSS variables allow us to avoid hardcoding common shared values. */
   /* highlights */
   --hl-0: #ff3e00;
   --hl-1: #f96740;
+  --hl-2: #cfb87c;
+  --hl-3: #C9B26D;
 
   /* backgrounds */
   --bg-0: #17191c;
@@ -28,6 +30,11 @@ CSS variables allow us to avoid hardcoding common shared values. */
   --fg-0: #e5e5e6;
   --fg-1: #cacbce;
   --fg-2: #878a92;
+  --fg-3: #E8D9AC;
+
+  /* rounded corners */
+  --rc-0: 2px;
+  --rc-1: 4px;
 }
 
 ol,
@@ -47,8 +54,8 @@ html {
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: var(--bg-0);
-  color: var(--fg-1);
+  background-color: var(--fg-0);
+  color: var(--bg-0);
   overflow-y: auto;
   min-height: 100%;
   position: relative;
@@ -57,12 +64,22 @@ body {
 
 button, .btn {
   all: unset;
-  border: 1px solid var(--hl-0);
-  background-color: var(--bg-0);
+  border: 1px solid var(--bg-0);
+  background-color: var(--fg-0);
   padding: 5px;
   text-align: center;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: var(--rc-0);
+}
+
+button:hover, .btn:hover {
+  border: 1px solid var(--bg-0);
+  background-color: var(--fg-3);
+}
+
+/* Modifies <div> tags */
+div {
+  border-radius: var(--rc-1);
 }
 
 a {
