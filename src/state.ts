@@ -93,7 +93,7 @@ export interface State {
 export const useGlobalStore = create<State>()(
   persist(
     (set, get) => ({
-      numYears: DEFAULT_NUM_YEARS,
+      numYears: 4, //DEFAULT_NUM_YEARS,
       startYear: new Date().getFullYear(),
 
       addYear: () => {
@@ -115,7 +115,7 @@ export const useGlobalStore = create<State>()(
       },
 
       classSlots: Array<ClassSlot | null>(
-        CLASS_SLOTS_PER_YEAR * DEFAULT_NUM_YEARS
+        CLASS_SLOTS_PER_YEAR * DEFAULT_NUM_YEARS,
       ).fill(null),
 
       setClassSlot: (slotIndex, value) => {
@@ -144,13 +144,13 @@ export const useGlobalStore = create<State>()(
           const yearsRemoved = s.numYears - DEFAULT_NUM_YEARS;
           if (yearsRemoved > 0) {
             newClassSlots.splice(
-              newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved
+              newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved,
             );
           } else if (yearsRemoved < 0) {
             newClassSlots.push(
               ...Array<ClassSlot | null>(
-                CLASS_SLOTS_PER_YEAR * yearsRemoved
-              ).fill(null)
+                CLASS_SLOTS_PER_YEAR * Math.abs(yearsRemoved),
+              ).fill(null),
             );
           }
 
@@ -189,6 +189,6 @@ export const useGlobalStore = create<State>()(
         startYear: state.startYear,
         classSlots: state.classSlots,
       }),
-    }
-  )
+    },
+  ),
 );
