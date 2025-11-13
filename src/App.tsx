@@ -4,6 +4,7 @@ import "./index.css";
 import css from "./styles/App.module.css";
 import DegreePlanner from "./containers/DegreePlanner";
 import ClassBrowser from "./containers/ClassBrowser";
+import Modal from "./containers/Modal";
 
 // This is the root component of our app
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
     <div className={css.app}>
       <DegreePlanner />
       <ClassBrowser />
+      <Modal />
     </div>
   );
 }
