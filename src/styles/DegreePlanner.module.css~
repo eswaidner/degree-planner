@@ -1,7 +1,7 @@
 .degreePlannerContainer {
   flex: 2;
   flex-direction: column; /* Display in a column (stacked vertically) */
-  background-color: var(--fg-0);
+  background-color: var(--bg-3);
   padding: 10px;
 }
 
@@ -19,17 +19,11 @@
   margin: 4px;
 }
 
-/* absolute positioning , not relative? get outside of container */
-/* global top level component - hooks, global states to inject into this component (added to state doc) */
-.modals {
-  background-color: var(--bg-1);
-}
-
 /* Yearly Schedule CSS */
 .yearlySchedule {
   display: flex;
   flex-direction: row;
-  /* background-color: var(--bg-0); */
+  background-color: var(--bg-0);
   padding: 10px;
   margin: 5px 0px; /* top/bottom, left/right */
   height: 93%;
@@ -39,8 +33,8 @@
 .year {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  background-color: var(--bg-0);
+  flex: 1; 
+  background-color: var(--bg-3);
   padding: 10px;
   margin: 5px 5px;
 }
@@ -49,9 +43,9 @@
 .semester {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1; 
   gap: 5px;
-  background-color: var(--hl-3);
+  background-color: var(--bg-2);
   padding: 10px;
   margin: 5px 0px;
 }
