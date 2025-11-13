@@ -5,6 +5,7 @@ import classesJson from "../data/classes.json";
 export const classes = classesJson as Record<string, Class>;
 
 import degreeJson from "../data/cs_bs_degree.json";
+import type { ReactNode } from "react";
 export const degree = degreeJson as Degree;
 
 const DEFAULT_NUM_YEARS = 4;
@@ -79,6 +80,12 @@ export interface State {
 
   /** Resets the degree plan, preserving degree audit imports if applicable */
   resetDegreePlan: () => void;
+
+  modalKey?: string;
+  modalContent: ReactNode;
+
+  /** Sets modal content for a unique key. */
+  setModalContent: (key: string, content: ReactNode) => void;
 }
 
 /** Hook that reads a field from the global store.
@@ -108,7 +115,7 @@ export const useGlobalStore = create<State>()(
       },
 
       classSlots: Array<ClassSlot | null>(
-        CLASS_SLOTS_PER_YEAR * DEFAULT_NUM_YEARS,
+        CLASS_SLOTS_PER_YEAR * DEFAULT_NUM_YEARS
       ).fill(null),
 
       setClassSlot: (slotIndex, value) => {
@@ -137,13 +144,13 @@ export const useGlobalStore = create<State>()(
           const yearsRemoved = s.numYears - DEFAULT_NUM_YEARS;
           if (yearsRemoved > 0) {
             newClassSlots.splice(
-              newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved,
+              newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved
             );
           } else if (yearsRemoved < 0) {
             newClassSlots.push(
               ...Array<ClassSlot | null>(
-                CLASS_SLOTS_PER_YEAR * yearsRemoved,
-              ).fill(null),
+                CLASS_SLOTS_PER_YEAR * yearsRemoved
+              ).fill(null)
             );
           }
 
@@ -157,6 +164,19 @@ export const useGlobalStore = create<State>()(
           return { numYears: DEFAULT_NUM_YEARS, classSlots: newClassSlots };
         });
       },
+
+      modalKey: undefined,
+      modalContent: undefined,
+
+      setModalContent: (key, content) => {
+        // do not close modal if key doesn't match
+        if (!content && key !== get().modalKey) return;
+
+        return set(() => ({
+          modalKey: key,
+          modalContent: content,
+        }));
+      },
     }),
 
     {
@@ -169,6 +189,6 @@ export const useGlobalStore = create<State>()(
         startYear: state.startYear,
         classSlots: state.classSlots,
       }),
-    },
-  ),
+    }
+  )
 );
