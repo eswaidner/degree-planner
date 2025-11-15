@@ -1,6 +1,7 @@
 import css from "./../styles/DegreePlanner.module.css";
 import UploadDegreeBtn from "./UploadFileBtn";
 import { useGlobalStore } from "../state";
+import ResetButton from "./ResetButton";
 
 function SelectDegreeBtn() {
   return (
@@ -17,17 +18,6 @@ function ExportPlanBtn() {
   return (
     <button onClick={handleClick} className={`btn ${css.btnBarButtons}`}>
       Export Plan
-    </button>
-  );
-}
-
-function ResetBtn() {
-  function handleClick() {
-    alert("Reset button clicked");
-  }
-  return (
-    <button onClick={handleClick} className={`btn ${css.btnBarButtons}`}>
-      Reset
     </button>
   );
 }
@@ -70,7 +60,7 @@ const ButtonBar: React.FC = () => {
       />
       <SelectDegreeBtn />
       <ExportPlanBtn />
-      <ResetBtn />
+      <ResetButton />
       <AddYearBtn />
       <RemoveYearBtn />
     </div>
