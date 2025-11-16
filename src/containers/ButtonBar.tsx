@@ -1,6 +1,7 @@
 import { useGlobalStore } from "../state"; 
 import css from "./../styles/DegreePlanner.module.css";
 import UploadDegreeBtn from "./UploadFileBtn";
+import { useGlobalStore } from "../state";
 
 function SelectDegreeBtn() {
   return (
@@ -43,11 +44,19 @@ function RemoveYearBtn() {
 } 
 
 const ButtonBar: React.FC = () => {
+  const uploadDegreeAudit = useGlobalStore((s) => s.uploadDegreeAudit);
+
   return (
     <div className={css.buttonBar}>
       <UploadDegreeBtn
         onFileSelected={(file) => {
-          console.log("File:", file);
+          //TODO modal confirm
+          file
+            .text()
+            .then(uploadDegreeAudit)
+            .catch(() => {
+              console.log("Error: failed to load file");
+            });
         }}
       />
       <SelectDegreeBtn />

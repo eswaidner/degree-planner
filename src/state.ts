@@ -6,11 +6,12 @@ export const classes = classesJson as Record<string, Class>;
 
 import degreeJson from "../data/cs_bs_degree.json";
 import type { ReactNode } from "react";
+import { termToSlotIndex, termToYear } from "./utils";
 export const degree = degreeJson as Degree;
 
 const DEFAULT_NUM_YEARS = 4;
-const CLASS_SLOTS_PER_SEMESTER = 6;
-const CLASS_SLOTS_PER_YEAR = CLASS_SLOTS_PER_SEMESTER * 2;
+export const CLASS_SLOTS_PER_SEMESTER = 7;
+export const CLASS_SLOTS_PER_YEAR = CLASS_SLOTS_PER_SEMESTER * 2;
 
 /** Class listing */
 export interface Class {
@@ -70,6 +71,9 @@ export interface State {
   classSlots: (ClassSlot | null)[];
   setClassSlot: (slotIndex: number, value: ClassSlot | null) => void;
 
+  degreeAuditUploaded: boolean;
+  uploadDegreeAudit: (html: string) => void;
+
   /** The current selected class */
   selectedClass: string | null;
   setSelectedClass: (value: string | null) => void;
@@ -128,6 +132,80 @@ export const useGlobalStore = create<State>()(
         });
       },
 
+      degreeAuditUploaded: false,
+      uploadDegreeAudit: (html) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        let startYear: number = new Date().getFullYear();
+        let endYear: number = startYear + DEFAULT_NUM_YEARS;
+        const classIds: Record<string, string> = {}; // class id, audit semester
+        Array.from(doc.querySelectorAll(".takenCourse")).forEach((c) => {
+          const course = c.querySelector(".course");
+          if (!course) return;
+
+          // transform class id into standard 'PREFIX ####' format
+          let id = course.textContent.replace(/\s/g, "");
+          const num = id.slice(id.length - 4);
+          const prefix = id.slice(0, id.length - num.length);
+          id = `${prefix} ${num}`;
+
+          // dedup and validate class id exists in class db
+          if (id in classIds || !(id in classes)) return;
+
+          const term = c.querySelector(".term")?.textContent.trim();
+          if (!term) return;
+
+          const year = termToYear(term);
+          startYear = Math.min(startYear, year);
+          endYear = Math.max(endYear, year);
+          classIds[id] = term;
+        });
+
+        return set(() => {
+          // reset years and class slots
+          const numYears = Math.max(1, endYear - startYear);
+          const newClassSlots = Array<ClassSlot | null>(
+            numYears * CLASS_SLOTS_PER_YEAR,
+          ).fill(null);
+
+          // set class slots
+          for (const entry of Object.entries(classIds)) {
+            // find open class slot
+            let open = false;
+            let slotIdx = termToSlotIndex(entry[1], startYear);
+            for (let i = 0; i < CLASS_SLOTS_PER_SEMESTER; i++) {
+              if (newClassSlots[slotIdx]) {
+                slotIdx++;
+              } else {
+                open = true;
+                break;
+              }
+            }
+
+            // discard class if semester if already full
+            if (!open) {
+              console.log(
+                `Warning: semester ${entry[1]} is full, discarding class ${entry[0]}`,
+              );
+              continue;
+            }
+
+            newClassSlots[slotIdx] = {
+              classId: entry[0],
+              auditSemester: entry[1],
+            };
+          }
+
+          return {
+            startYear: startYear,
+            numYears: numYears,
+            degreeAuditUploaded: true,
+            classSlots: newClassSlots,
+          };
+        });
+      },
+
       selectedClass: null,
       setSelectedClass: (value) => {
         get().setClassToAdd(null);
@@ -151,7 +229,11 @@ export const useGlobalStore = create<State>()(
           } else if (yearsRemoved < 0) {
             newClassSlots.push(
               ...Array<ClassSlot | null>(
+<<<<<<< HEAD
                 CLASS_SLOTS_PER_YEAR * Math.abs(yearsRemoved),
+=======
+                CLASS_SLOTS_PER_YEAR * yearsRemoved,
+>>>>>>> 6d84a8f (degree audit parsing)
               ).fill(null),
             );
           }
@@ -190,6 +272,7 @@ export const useGlobalStore = create<State>()(
         numYears: state.numYears,
         startYear: state.startYear,
         classSlots: state.classSlots,
+        degreeAuditUploaded: state.degreeAuditUploaded,
       }),
     },
   ),

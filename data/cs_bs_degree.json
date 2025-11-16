@@ -4,7 +4,7 @@
   "minCredits": 120,
   "reqs": [
     {
-      "name": "Computer Science Courses",
+      "name": "Core",
       "classes": [
         ["CS 1150"],
         ["CS 1450"],
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "name": "General Electives",
+      "name": "Open Electives",
       "classes": [{ "totalCredits": 24, "prefixes": [], "atOrAbove": 1000 }]
     }
   ]
