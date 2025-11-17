@@ -1,48 +1,70 @@
-import { useGlobalStore } from "../state"; 
+import { useGlobalStore, classes } from "../state"; 
 import css from "./../styles/DegreePlanner.module.css";
 
-function AddClassBtn() {
-  function handleClick() {
-    alert("Add Class Button Clicked");
-  }
-  return <button onClick={handleClick}>+ Add Class</button>;
-}
+function AddClassBtn({ slotIndex }: { slotIndex: number }) {
+  const classToAdd = useGlobalStore((s) => s.classToAdd); 
+  const setClassToAdd = useGlobalStore((s) => s.setClassToAdd); 
+  const classSlot = useGlobalStore((s) => s.classSlots[slotIndex]); 
+  const setClassSlot = useGlobalStore((s) => s.setClassSlot); 
 
-function Semester({ semester }) { 
-	const CLASS_SLOTS_PER_SEMESTER  = 6; 
-	const classSlots = Array.from( { length: CLASS_SLOTS_PER_SEMESTER }, (_, i) => i); //name something different? 
+  const slotEmpty = classToAdd && classSlot == null; 
   
- return (
-	  <div className={css.semester}>
-          	<h2><center>{semester}</center></h2> 
-    	  	{classSlots.map(classSlot => ( 
-			<AddClassBtn/> 
-	  	))}
-	  </div>
-	); 
+  return (
+    <button
+      className={slotEmpty ? `btn ${css.highlight}` : ''} 
+      onClick={() => { 
+        // check if class to add
+        if(classToAdd) { 
+          // check if slot is empty 
+          if (classSlot == null) { 
+            setClassSlot(slotIndex, {classId: classToAdd, auditSemester: null});
+            setClassToAdd(null);
+          } 
+        }
+      }}
+    >
+      {classSlot ? (<>{classSlot.classId} {classes[classSlot.classId].name}</>) : ('+ Add Class')}
+    </button>
+  );
 }
 
-function Year({ year }) {
+function Semester({ semester, startingSlot }: { semester: string; startingSlot: number }) { 
+  const CLASS_SLOTS_PER_SEMESTER = 6;
+  const classSlots = Array.from({ length: CLASS_SLOTS_PER_SEMESTER }, (_, i) => i);   
+  
+  return (
+    <div className={css.semester}>
+      <h2><center>{semester}</center></h2> 
+      {classSlots.map(classSlot => { 
+        const slotIndex = startingSlot + classSlot; 
+        return <AddClassBtn slotIndex={slotIndex} />; 
+      })} 
+    </div>
+  ); 
+}
+
+function Year({ year, startingSlot }: { year: number; startingSlot: number }) {
   return (
     <div className={css.year}>
-          <h2><center>{year}</center></h2>
-	  <Semester semester={'Fall'}/> 
-	  <Semester semester={'Spring'}/> 
-    </div>
+      <h2><center>{year}</center></h2>
+      <Semester semester={'Fall'} startingSlot={startingSlot}/> 
+      <Semester semester={'Spring'} startingSlot={startingSlot + 6}/> 
+    </div> 
   );
 }
 
 const YearlySchedule: React.FC = () => {
-	const startYear = useGlobalStore((s) => s.startYear);
-        const numYears = useGlobalStore((s) => s.numYears);
-	const years = Array.from( { length: numYears}, (_, i) 	=> startYear + i);
+  const startYear = useGlobalStore((s) => s.startYear);
+  const numYears = useGlobalStore((s) => s.numYears);
+  const years = Array.from({ length: numYears }, (_, i) => startYear + i);
 
   return (
     <div className={css.yearlySchedule}>
-      {years.map(year => ( 
-		<Year year={year} /> 
+      {years.map((year, i) => ( 
+        <Year year={year} startingSlot={i * 12} /> 
       ))}
     </div> 
   );
 }
+
 export default YearlySchedule;
