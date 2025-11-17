@@ -13,7 +13,7 @@
 }
 
 .modal {
-  background-color: var(--bg-1);
+  background-color: var(--fg-0);
   border: 1px solid var(--bg-0);
   border-radius: 7px;
   display: flex;
@@ -21,4 +21,8 @@
   justify-content: center;
   align-items: center;
   padding: 25px;
+}
+
+.modalBtn {
+  margin: 12px 10px 0px;
 }

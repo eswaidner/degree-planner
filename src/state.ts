@@ -223,10 +223,12 @@ export const useGlobalStore = create<State>()(
           //TODO if degree audit uploaded, reset num years to what degree audit
           const yearsRemoved = s.numYears - DEFAULT_NUM_YEARS;
           if (yearsRemoved > 0) {
+            console.log("inside if years removed > 0");
             newClassSlots.splice(
               newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved,
             );
           } else if (yearsRemoved < 0) {
+            console.log("inside else if years removed < 0");
             newClassSlots.push(
               ...Array<ClassSlot | null>(
                 CLASS_SLOTS_PER_YEAR * Math.abs(yearsRemoved),
@@ -237,6 +239,7 @@ export const useGlobalStore = create<State>()(
           // reset class slots that are not imported from a degree audit
           for (let i = 0; i < newClassSlots.length; i++) {
             if (!newClassSlots[i]?.auditSemester) {
+              console.log("inside if class slot not from audit");
               newClassSlots[i] = null;
             }
           }
