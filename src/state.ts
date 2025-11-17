@@ -90,6 +90,10 @@ export interface State {
 
   /** Sets modal content for a unique key. */
   setModalContent: (key: string, content: ReactNode) => void;
+
+  /** Tracks if Disclaimer modal was shown on page load up */
+  disclaimerShown: boolean;
+  markDiscShown: () => void;
 }
 
 /** Hook that reads a field from the global store.
@@ -260,6 +264,9 @@ export const useGlobalStore = create<State>()(
           modalContent: content,
         }));
       },
+
+      disclaimerShown: false,
+      markDiscShown: () => set({ disclaimerShown: true }),
     }),
 
     {
@@ -272,6 +279,7 @@ export const useGlobalStore = create<State>()(
         startYear: state.startYear,
         classSlots: state.classSlots,
         degreeAuditUploaded: state.degreeAuditUploaded,
+        disclaimerShown: state.disclaimerShown,
       }),
     },
   ),
