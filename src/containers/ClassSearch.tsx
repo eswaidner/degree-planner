@@ -8,7 +8,7 @@ const MIN_SEARCH_LEN = 2;
 export default function ClassSearch() {
   const [searchResults, setSearchResults] = useState<FuseResult<Class>[]>([]);
   const [searchString, setSeachString] = useState<string | null>(null);
-  const setHoveredClass = useGlobalStore((s) => s.setHoveredClass);
+  const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
 
   const searchEngine = useMemo(
     () =>
@@ -33,7 +33,7 @@ export default function ClassSearch() {
     setSearchResults(searchEngine.search(searchString));
   }, [searchString, searchEngine, setSearchResults]);
 
-  if (searchResults.length == 1) setHoveredClass(searchResults[0].item.number);
+  if (searchResults.length == 1) setSelectedClass(searchResults[0].item.number);
 
   return (
     <div className={css.search}>
@@ -52,7 +52,7 @@ export default function ClassSearch() {
       ></input>
       <div className={css.searchResults}>
         {searchResults.length > 0 || searchString
-          ? searchResults.map((r) => <ClassThumbnail cls={r.item} />)
+          ? searchResults.map((r, i) => <ClassThumbnail key={i} cls={r.item} />)
           : Object.values(classes).map((c, i) => (
               <ClassThumbnail key={i} cls={c} />
             ))}

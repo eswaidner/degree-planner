@@ -5,16 +5,20 @@ export default function ClassDisplay() {
   const selectedClass = useGlobalStore((s) => s.selectedClass);
   const cls = selectedClass ? classes[selectedClass] : null;
 
+  if (!cls) {
+    return <div className={css.display}>Select a class to see details</div>;
+  }
+
   return (
     <div className={css.display}>
       <AddClassButton cls={cls} />
       <h2>
-        {cls?.number} - {cls?.name}
+        {cls.number} - {cls.name}
       </h2>
-      {cls?.prereqs && <div>Prer. {cls.prereqs}</div>}
-      {cls?.coreqs && <div>Coreq. {cls.coreqs}</div>}
-      <div>{cls?.description}</div>
-      <div>Semesters Offered: {cls?.offered}</div>
+      {cls.prereqs && <div>Prer. {cls.prereqs}</div>}
+      {cls.coreqs && <div>Coreq. {cls.coreqs}</div>}
+      <div>{cls.description}</div>
+      <div>Semesters Offered: {cls.offered}</div>
     </div>
   );
 }
