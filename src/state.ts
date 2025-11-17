@@ -112,7 +112,7 @@ export const useGlobalStore = create<State>()(
 
       removeYear: () => {
         return set((s) => {
-	  if (s.numYears <= 1) return s; 
+          if (s.numYears <= 1) return s;
 
           const newClassSlots = [...s.classSlots];
           newClassSlots.splice(s.classSlots.length - CLASS_SLOTS_PER_YEAR);
@@ -229,11 +229,7 @@ export const useGlobalStore = create<State>()(
           } else if (yearsRemoved < 0) {
             newClassSlots.push(
               ...Array<ClassSlot | null>(
-<<<<<<< HEAD
                 CLASS_SLOTS_PER_YEAR * Math.abs(yearsRemoved),
-=======
-                CLASS_SLOTS_PER_YEAR * yearsRemoved,
->>>>>>> 6d84a8f (degree audit parsing)
               ).fill(null),
             );
           }
