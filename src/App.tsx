@@ -2,9 +2,13 @@
 // import { useGlobalStore } from "./state";
 import "./index.css";
 import css from "./styles/App.module.css";
+import m_css from "./styles/Modal.module.css";
+import { useGlobalStore } from "./state";
+
 import DegreePlanner from "./containers/DegreePlanner";
 import ClassBrowser from "./containers/ClassBrowser";
 import Modal from "./containers/Modal";
+import { useEffect } from "react";
 
 // This is the root component of our app
 export default function App() {
@@ -12,8 +16,6 @@ export default function App() {
   // const exampleField = useGlobalStore((state) => state.exampleField);
   // const exampleAction = useGlobalStore((state) => state.exampleAction);
   // exampleAction();
-
-  //const title = "Degree Planner";
 
   // The useState hook is how we can use reactive local state
   // const [localState, setLocalState] = useState<string>("");
@@ -26,6 +28,32 @@ export default function App() {
   // Components return 'tsx', which is an HTML templating language
   // The syntax is very similar to HTML
   // TypeScript expressions can be embedded within {} scopes, like 'title' below
+
+  const disclaimerShown = useGlobalStore((s) => s.disclaimerShown);
+  const markDiscShown = useGlobalStore((s) => s.markDiscShown);
+  const setModalContent = useGlobalStore((s) => s.setModalContent);
+
+  // Use effect runs once on mount
+  useEffect(() => {
+    if (!disclaimerShown) {
+      setModalContent("disclaimerModalKey", (
+        <div>
+          <h2>Disclaimer:</h2>
+          <p>This program counts courses once. Refer to your academic advisor about counting courses towards multiple requirements.</p>
+          <div className={m_css.modalRow}>
+              <button className={`btn ${m_css.modalBtn}`}
+                  onClick={() => {
+                      setModalContent("disclaimerModalKey", null);
+                  }}
+              >Close</button>
+          </div>
+      </div>
+      ));
+      markDiscShown();
+    }
+  }, [disclaimerShown, markDiscShown, setModalContent]);
+
+
   return (
     // This is how you apply a style from a css module to an element
     <div className={css.app}>

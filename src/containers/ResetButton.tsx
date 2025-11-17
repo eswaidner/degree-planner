@@ -11,13 +11,15 @@ export default function ResetButton() {
         setModalContent("resetModalKey",(
             <div>
                 <h2>Confirm Reset</h2>
-                <button className={`btn ${m_css.modalBtn}`} onClick={() => {
-                    setModalContent("resetModalKey", null);
-                    resetDegreePlan();
-                }}>Reset</button>
-                <button className={`btn ${m_css.modalBtn}`} onClick={() => {
-                    setModalContent("resetModalKey", null);
-                }}>Cancel</button>
+                <div className={`${m_css.modalRow}`}>
+                    <button className={`btn ${m_css.modalBtn}`} onClick={() => {
+                        setModalContent("resetModalKey", null);
+                        resetDegreePlan();
+                    }}>Reset</button>
+                    <button className={`btn ${m_css.modalBtn}`} onClick={() => {
+                        setModalContent("resetModalKey", null);
+                    }}>Cancel</button>
+                </div>
             </div>
         ));
     };
