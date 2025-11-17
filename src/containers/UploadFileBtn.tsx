@@ -14,9 +14,11 @@ export default function UploadDegreeBtn({ onFileSelected }: Props) {
         <div>
             <input
                 type="file"
+                accept='.html'
                 id="upload-degree-input" /* reference */
                 style={{ display: 'none' }}
                 onChange={event => {
+                /*If 1 file of type file is selected, set file var to selected file */
                 if (event.target.files?.[0]) {
                     onFileSelected(event.target.files[0]);
                 }
