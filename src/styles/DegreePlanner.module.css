@@ -45,23 +45,17 @@
   margin: 5px 5px;
 }
 
-/* Year Header CSS */
-.year .header {
-  display: flex;
-  flex-direction: row;
-  background-color: var(--fg-0);
-  padding: 10px;
-  margin: 5px 0px;
-  gap: 20px;
-}
-
 /* Semester CSS */
 .semester {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 5px;
   background-color: var(--hl-3);
   padding: 10px;
   margin: 5px 0px;
-  height: 93%;
 }
+
+.highlight { 
+	background-color: yellow; 
+} 

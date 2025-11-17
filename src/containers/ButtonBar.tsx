@@ -1,4 +1,4 @@
-import React from "react";
+import { useGlobalStore } from "../state"; 
 import css from "./../styles/DegreePlanner.module.css";
 import UploadDegreeBtn from "./UploadFileBtn";
 
@@ -32,6 +32,16 @@ function ResetBtn() {
   );
 }
 
+function AddYearBtn() { 
+	const addYear = useGlobalStore((s) => s.addYear); 
+  return <button onClick={addYear} className={`btn ${css.btnBarButtons}`}> + Add Year</button> 
+} 
+
+function RemoveYearBtn() { 
+	const removeYear = useGlobalStore((s) => s.removeYear); 
+  return <button onClick={removeYear} className={`btn ${css.btnBarButtons}`}> - Remove Year</button>
+} 
+
 const ButtonBar: React.FC = () => {
   return (
     <div className={css.buttonBar}>
@@ -43,6 +53,8 @@ const ButtonBar: React.FC = () => {
       <SelectDegreeBtn />
       <ExportPlanBtn />
       <ResetBtn />
+      <AddYearBtn /> 
+      <RemoveYearBtn /> 
     </div>
   );
 };
