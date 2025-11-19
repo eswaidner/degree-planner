@@ -76,7 +76,10 @@ export interface State {
 
   /** The current selected class */
   selectedClass: string | null;
-  setSelectedClass: (value: string | null) => void;
+  setSelectedClass: (value: string | null, classSlotIndex?: number) => void;
+
+  /** The current selected class slot (null if class selected from class browser) */
+  selectedClassSlotIndex: number | null;
 
   /** The current class selected to add to the degree plan */
   classToAdd: string | null;
@@ -211,9 +214,14 @@ export const useGlobalStore = create<State>()(
       },
 
       selectedClass: null,
-      setSelectedClass: (value) => {
+      selectedClassSlotIndex: null,
+      setSelectedClass: (value, classSlotIndex) => {
         get().setClassToAdd(null);
-        return set(() => ({ selectedClass: value }));
+        return set(() => ({
+          selectedClass: value,
+          selectedClassSlotIndex:
+            !value || classSlotIndex === undefined ? null : classSlotIndex,
+        }));
       },
 
       classToAdd: null,
