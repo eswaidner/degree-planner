@@ -66,9 +66,9 @@ function Semester({
 function Year({ year, startingSlot }: { year: number; startingSlot: number }) {
   return (
     <div className={css.year}>
-      <h2>
-        <center>{year}</center>
-      </h2>
+      <div className={css.yearText}>
+        <h2><center>{year}</center></h2>
+      </div>
       <Semester semester={"Fall"} startingSlot={startingSlot} />
       <Semester semester={"Spring"} startingSlot={startingSlot + 6} />
     </div>
