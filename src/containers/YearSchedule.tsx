@@ -6,6 +6,7 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
   const setClassToAdd = useGlobalStore((s) => s.setClassToAdd);
   const classSlot = useGlobalStore((s) => s.classSlots[slotIndex]);
   const setClassSlot = useGlobalStore((s) => s.setClassSlot);
+  const setSelectedClass = useGlobalStore((s) => s.setSelectedClass); 
 
   const slotEmpty = classToAdd && classSlot == null;
 
@@ -16,7 +17,7 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
         // check if class to add
         if (classToAdd) {
           // check if slot is empty
-          if (classSlot == null) {
+          if (classSlot == null || classSlot.auditSemester == null) {
             setClassSlot(slotIndex, {
               classId: classToAdd,
               auditSemester: null,
@@ -24,11 +25,14 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
             setClassToAdd(null);
           }
         }
-      }}
+	else if (classSlot) { 
+		setSelectedClass(classSlot.classId, slotIndex); 
+	}
+     }}
     >
       {classSlot ? (
         <>
-          {classSlot.classId} {classes[classSlot.classId].name}
+          {classSlot.classId}
         </>
       ) : (
         "+ Add Class"
@@ -40,6 +44,7 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
 function Semester({
   semester,
   startingSlot,
+  year,
 }: {
   semester: string;
   startingSlot: number;
@@ -53,7 +58,7 @@ function Semester({
   return (
     <div className={css.semester}>
       <h2>
-        <center>{semester}</center>
+        <center>{semester} {year}</center>
       </h2>
       {classSlots.map((classSlot, i) => {
         const slotIndex = startingSlot + classSlot;
@@ -64,13 +69,14 @@ function Semester({
 }
 
 function Year({ year, startingSlot }: { year: number; startingSlot: number }) {
+	const nextYear = year + 1; 
   return (
     <div className={css.year}>
       <div className={css.yearText}>
-        <h2><center>{year}</center></h2>
+        <h2><center>{year}-{nextYear}</center></h2>
       </div>
-      <Semester semester={"Fall"} startingSlot={startingSlot} />
-      <Semester semester={"Spring"} startingSlot={startingSlot + 6} />
+      <Semester semester={"Fall"} startingSlot={startingSlot} year={year}/>
+      <Semester semester={"Spring"} startingSlot={startingSlot + 6} year={nextYear} />
     </div>
   );
 }
