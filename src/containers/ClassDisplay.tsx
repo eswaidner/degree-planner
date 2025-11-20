@@ -55,18 +55,17 @@ function AddClassButton({ cls }: AddClassButtonProps) {
 		</button> 
 	); 
 } 
- else { 
-	 return (
-		 <button
-		 	className={css.addButton}
-      			onClick={() => {
-        			if (classToAdd) setClassToAdd(null);
-        			else if (cls) setClassToAdd(cls.number);
-      			}}
-			disabled={fromSlot && fromAudit}
-    		>
-      		{classToAdd ? "Cancel" : "Add Class"}
-    		</button>
-  	);
-	}
+  return (
+	<button
+		className={css.addButton}
+      		onClick={() => {
+        		if (classToAdd) setClassToAdd(null);
+        		else if (cls) setClassToAdd(cls.number);
+      		}}
+		disabled={fromSlot && fromAudit}
+    	>
+	{classToAdd ? "Cancel" : "Add Class"}
+    	</button>
+  );
+	
 }	
