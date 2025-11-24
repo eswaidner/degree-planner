@@ -1,4 +1,8 @@
-import { useGlobalStore, classes } from "../state";
+import {
+  CLASS_SLOTS_PER_SEMESTER,
+  CLASS_SLOTS_PER_YEAR,
+  useGlobalStore,
+} from "../state";
 import css from "./../styles/DegreePlanner.module.css";
 
 function AddClassBtn({ slotIndex }: { slotIndex: number }) {
@@ -6,7 +10,7 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
   const setClassToAdd = useGlobalStore((s) => s.setClassToAdd);
   const classSlot = useGlobalStore((s) => s.classSlots[slotIndex]);
   const setClassSlot = useGlobalStore((s) => s.setClassSlot);
-  const setSelectedClass = useGlobalStore((s) => s.setSelectedClass); 
+  const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
 
   const slotEmpty = classToAdd && classSlot == null;
 
@@ -24,19 +28,12 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
             });
             setClassToAdd(null);
           }
+        } else if (classSlot) {
+          setSelectedClass(classSlot.classId, slotIndex);
         }
-	else if (classSlot) { 
-		setSelectedClass(classSlot.classId, slotIndex); 
-	}
-     }}
+      }}
     >
-      {classSlot ? (
-        <>
-          {classSlot.classId}
-        </>
-      ) : (
-        "+ Add Class"
-      )}
+      {classSlot ? <>{classSlot.classId}</> : "+ Add Class"}
     </button>
   );
 }
@@ -48,8 +45,8 @@ function Semester({
 }: {
   semester: string;
   startingSlot: number;
+  year: number;
 }) {
-  const CLASS_SLOTS_PER_SEMESTER = 6;
   const classSlots = Array.from(
     { length: CLASS_SLOTS_PER_SEMESTER },
     (_, i) => i,
@@ -58,7 +55,9 @@ function Semester({
   return (
     <div className={css.semester}>
       <h2>
-        <center>{semester} {year}</center>
+        <center>
+          {semester} {year}
+        </center>
       </h2>
       {classSlots.map((classSlot, i) => {
         const slotIndex = startingSlot + classSlot;
@@ -69,14 +68,22 @@ function Semester({
 }
 
 function Year({ year, startingSlot }: { year: number; startingSlot: number }) {
-	const nextYear = year + 1; 
+  const nextYear = year + 1;
   return (
     <div className={css.year}>
       <div className={css.yearText}>
-        <h2><center>{year}-{nextYear}</center></h2>
+        <h2>
+          <center>
+            {year}-{nextYear}
+          </center>
+        </h2>
       </div>
-      <Semester semester={"Fall"} startingSlot={startingSlot} year={year}/>
-      <Semester semester={"Spring"} startingSlot={startingSlot + 6} year={nextYear} />
+      <Semester semester={"Fall"} startingSlot={startingSlot} year={year} />
+      <Semester
+        semester={"Spring"}
+        startingSlot={startingSlot + CLASS_SLOTS_PER_SEMESTER}
+        year={nextYear}
+      />
     </div>
   );
 }
@@ -89,7 +96,7 @@ const YearlySchedule: React.FC = () => {
   return (
     <div className={css.yearlySchedule}>
       {years.map((year, i) => (
-        <Year key={i} year={year} startingSlot={i * 12} />
+        <Year key={i} year={year} startingSlot={i * CLASS_SLOTS_PER_YEAR} />
       ))}
     </div>
   );

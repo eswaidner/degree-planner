@@ -6,7 +6,7 @@ export const classes = classesJson as Record<string, Class>;
 
 import degreeJson from "../data/cs_bs_degree.json";
 import type { ReactNode } from "react";
-import { termToSlotIndex, termToYear } from "./utils";
+import { termToStartSlotIndex, termToYear } from "./utils";
 export const degree = degreeJson as Degree;
 
 const DEFAULT_NUM_YEARS = 4;
@@ -145,7 +145,7 @@ export const useGlobalStore = create<State>()(
         const doc = parser.parseFromString(html, "text/html");
 
         let startYear: number = new Date().getFullYear();
-        let endYear: number = startYear + DEFAULT_NUM_YEARS;
+        let endYear: number = startYear;
         const classIds: Record<string, string> = {}; // class id, audit semester
         Array.from(doc.querySelectorAll(".takenCourse")).forEach((c) => {
           const course = c.querySelector(".course");
@@ -162,6 +162,9 @@ export const useGlobalStore = create<State>()(
 
           const term = c.querySelector(".term")?.textContent.trim();
           if (!term) return;
+
+          const semesterCode = term.slice(0, 2);
+          if (semesterCode !== "FA" && semesterCode !== "SP") return;
 
           const year = termToYear(term);
           startYear = Math.min(startYear, year);
@@ -180,7 +183,7 @@ export const useGlobalStore = create<State>()(
           for (const entry of Object.entries(classIds)) {
             // find open class slot
             let open = false;
-            let slotIdx = termToSlotIndex(entry[1], startYear);
+            let slotIdx = termToStartSlotIndex(entry[1], startYear);
             for (let i = 0; i < CLASS_SLOTS_PER_SEMESTER; i++) {
               if (newClassSlots[slotIdx]) {
                 slotIdx++;
