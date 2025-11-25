@@ -81,14 +81,5 @@
 }
 
 .addButton {
-  border: 1px solid var(--hl-1);
   max-width: 125px;
-}
-
-.addButton:hover {
-  opacity: 0.8;
-}
-
-.addButton:active {
-  opacity: 0.65;
 }

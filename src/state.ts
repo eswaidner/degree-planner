@@ -6,7 +6,7 @@ export const classes = classesJson as Record<string, Class>;
 
 import degreeJson from "../data/cs_bs_degree.json";
 import type { ReactNode } from "react";
-import { termToSlotIndex, termToYear } from "./utils";
+import { termToStartSlotIndex, termToYear } from "./utils";
 export const degree = degreeJson as Degree;
 
 const DEFAULT_NUM_YEARS = 4;
@@ -72,6 +72,7 @@ export interface State {
   setClassSlot: (slotIndex: number, value: ClassSlot | null) => void;
 
   degreeAuditUploaded: boolean;
+  degreeAuditYears: number;
   uploadDegreeAudit: (html: string) => void;
 
   /** The current selected class */
@@ -140,12 +141,13 @@ export const useGlobalStore = create<State>()(
       },
 
       degreeAuditUploaded: false,
+      degreeAuditYears: 0,
       uploadDegreeAudit: (html) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, "text/html");
 
         let startYear: number = new Date().getFullYear();
-        let endYear: number = startYear + DEFAULT_NUM_YEARS;
+        let endYear: number = startYear;
         const classIds: Record<string, string> = {}; // class id, audit semester
         Array.from(doc.querySelectorAll(".takenCourse")).forEach((c) => {
           const course = c.querySelector(".course");
@@ -162,6 +164,9 @@ export const useGlobalStore = create<State>()(
 
           const term = c.querySelector(".term")?.textContent.trim();
           if (!term) return;
+
+          const semesterCode = term.slice(0, 2);
+          if (semesterCode !== "FA" && semesterCode !== "SP") return;
 
           const year = termToYear(term);
           startYear = Math.min(startYear, year);
@@ -180,7 +185,7 @@ export const useGlobalStore = create<State>()(
           for (const entry of Object.entries(classIds)) {
             // find open class slot
             let open = false;
-            let slotIdx = termToSlotIndex(entry[1], startYear);
+            let slotIdx = termToStartSlotIndex(entry[1], startYear);
             for (let i = 0; i < CLASS_SLOTS_PER_SEMESTER; i++) {
               if (newClassSlots[slotIdx]) {
                 slotIdx++;
@@ -208,6 +213,7 @@ export const useGlobalStore = create<State>()(
             startYear: startYear,
             numYears: numYears,
             degreeAuditUploaded: true,
+            degreeAuditYears: numYears,
             classSlots: newClassSlots,
           };
         });
@@ -231,16 +237,18 @@ export const useGlobalStore = create<State>()(
         return set((s) => {
           const newClassSlots = [...s.classSlots];
 
+          const newNumYears = s.degreeAuditUploaded
+            ? s.degreeAuditYears
+            : DEFAULT_NUM_YEARS;
+
+          const yearsRemoved = s.numYears - newNumYears;
+
           // reset years, adding/removing class slots
-          //TODO if degree audit uploaded, reset num years to what degree audit
-          const yearsRemoved = s.numYears - DEFAULT_NUM_YEARS;
           if (yearsRemoved > 0) {
-            console.log("inside if years removed > 0");
             newClassSlots.splice(
               newClassSlots.length - CLASS_SLOTS_PER_YEAR * yearsRemoved,
             );
           } else if (yearsRemoved < 0) {
-            console.log("inside else if years removed < 0");
             newClassSlots.push(
               ...Array<ClassSlot | null>(
                 CLASS_SLOTS_PER_YEAR * Math.abs(yearsRemoved),
@@ -251,12 +259,11 @@ export const useGlobalStore = create<State>()(
           // reset class slots that are not imported from a degree audit
           for (let i = 0; i < newClassSlots.length; i++) {
             if (!newClassSlots[i]?.auditSemester) {
-              console.log("inside if class slot not from audit");
               newClassSlots[i] = null;
             }
           }
 
-          return { numYears: DEFAULT_NUM_YEARS, classSlots: newClassSlots };
+          return { numYears: newNumYears, classSlots: newClassSlots };
         });
       },
 
@@ -287,6 +294,7 @@ export const useGlobalStore = create<State>()(
         startYear: state.startYear,
         classSlots: state.classSlots,
         degreeAuditUploaded: state.degreeAuditUploaded,
+        degreeAuditYears: state.degreeAuditYears,
         disclaimerShown: state.disclaimerShown,
       }),
     },

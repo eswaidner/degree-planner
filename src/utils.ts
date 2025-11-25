@@ -1,7 +1,7 @@
 import { CLASS_SLOTS_PER_SEMESTER, CLASS_SLOTS_PER_YEAR } from "./state";
 
 /** Converts a term code ex. 'FA25' to the first class slot index in that term */
-export function termToSlotIndex(term: string, startYear: number): number {
+export function termToStartSlotIndex(term: string, startYear: number): number {
   const sem = term.slice(0, 2);
   const year = termToYear(term);
 
@@ -11,7 +11,8 @@ export function termToSlotIndex(term: string, startYear: number): number {
 
   return (
     (year - startYear) * CLASS_SLOTS_PER_YEAR +
-    semIndex * CLASS_SLOTS_PER_SEMESTER
+    semIndex * CLASS_SLOTS_PER_SEMESTER -
+    semIndex * CLASS_SLOTS_PER_YEAR
   );
 }
 
