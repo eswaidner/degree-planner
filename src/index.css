@@ -62,7 +62,8 @@ body {
   display: flex;
 }
 
-button {
+button,
+.btn {
   all: unset;
   border: 1px solid var(--bg-0);
   background-color: var(--fg-0);
@@ -72,12 +73,14 @@ button {
   border-radius: var(--rc-0);
 }
 
-button:hover {
+button:hover,
+.btn:hover {
   border: 1px solid var(--bg-0);
   background-color: var(--fg-3);
 }
 
-button:disabled {
+button:disabled,
+.btn:disabled {
   border: 1px solid var(--bg-1);
   background-color: var(--fg-2);
 }
