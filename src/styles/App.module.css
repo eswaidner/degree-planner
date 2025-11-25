@@ -5,8 +5,8 @@ not conflict with styles from other css files. */
 /* Styles in CSS modules should use camelCase names for TS compatability */
 
 .app {
-    display: flex;
-    flex-direction: row; /* Display in a row (horizontally) */
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: row; /* Display in a row (horizontally) */
+  width: 100%;
+  height: 100%;
 }

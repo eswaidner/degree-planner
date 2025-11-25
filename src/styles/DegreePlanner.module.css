@@ -3,6 +3,7 @@
   flex-direction: column; /* Display in a column (stacked vertically) */
   background-color: var(--fg-0);
   padding: 10px;
+  max-width: calc(100vw - 35vw);
 }
 
 /* Button Bar CSS */
@@ -33,6 +34,7 @@
   padding: 10px;
   margin: 5px 0px; /* top/bottom, left/right */
   height: 93%;
+  overflow-x: scroll;
 }
 
 /* Year Slot CSS */
@@ -43,6 +45,7 @@
   background-color: var(--bg-0);
   padding: 10px;
   margin: 5px 5px;
+  min-width: 225px;
 }
 
 /* Year text CSS */
@@ -59,6 +62,10 @@
   background-color: var(--hl-3);
   padding: 10px;
   margin: 5px 0px;
+}
+
+.classSlot {
+  flex-grow: 1;
 }
 
 .highlight {

@@ -16,7 +16,10 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
 
   return (
     <button
-      className={slotEmpty ? `btn ${css.highlight}` : ""}
+      className={
+        slotEmpty ? `${css.highlight} ${css.classSlot}` : `${css.classSlot}`
+      }
+      disabled={!classToAdd && !classSlot}
       onClick={() => {
         // check if class to add
         if (classToAdd) {
@@ -33,7 +36,7 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
         }
       }}
     >
-      {classSlot ? <>{classSlot.classId}</> : "+ Add Class"}
+      {classSlot ? <>{classSlot.classId}</> : "-"}
     </button>
   );
 }
