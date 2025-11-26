@@ -15,8 +15,8 @@ slate to build off of.*/
 CSS variables allow us to avoid hardcoding common shared values. */
 :root {
   /* highlights */
-  --hl-0: #ff3e00;
-  --hl-1: #f96740;
+  --hl-0: #10eeff;
+  --hl-1: #10aaff;
   --hl-2: #cfb87c;
   --hl-3: #c9b26d;
 

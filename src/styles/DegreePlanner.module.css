@@ -71,3 +71,8 @@
 .highlight {
   background-color: yellow;
 }
+
+.highlight2 {
+  color: var(--hl-1);
+  font-weight: bold;
+}

@@ -18,6 +18,7 @@
   margin: 5px 0px;
   max-height: 70vh;
   min-height: 70vh;
+  gap: 10px;
 }
 
 .search {
@@ -63,12 +64,6 @@
   border-color: var(--hl-1);
 }
 
-.filters {
-  flex: 1;
-  background-color: var(--fg-1);
-  padding: 10px;
-}
-
 .display {
   flex-grow: 1;
   background-color: var(--fg-1);
@@ -82,4 +77,48 @@
 
 .addButton {
   max-width: 125px;
+}
+
+.filters {
+  flex: 1;
+  background-color: var(--fg-1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 3px 0;
+  border: 1px solid var(--fg-2);
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.filter:has(input:hover) {
+  border: 1px solid var(--bg-1);
+  border-left: 0;
+  border-right: 0;
+}
+
+.filterToggle {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.filterToggle label:hover,
+.filterToggle:has(input:hover) {
+  color: var(--bg-3);
+  cursor: pointer;
+}
+
+.filterProgress {
+  font-size: 0.85rem;
 }

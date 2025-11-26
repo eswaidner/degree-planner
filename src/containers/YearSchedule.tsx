@@ -11,14 +11,19 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
   const classSlot = useGlobalStore((s) => s.classSlots[slotIndex]);
   const setClassSlot = useGlobalStore((s) => s.setClassSlot);
   const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
+  const classSearchFilter = useGlobalStore((s) => s.classSearchFilter);
 
   const slotEmpty = classToAdd && classSlot == null;
 
+  const reqHighlighted =
+    !classToAdd &&
+    classSlot &&
+    classSearchFilter !== undefined &&
+    classSlot.countsTowardsReqIndex === classSearchFilter;
+
   return (
     <button
-      className={
-        slotEmpty ? `${css.highlight} ${css.classSlot}` : `${css.classSlot}`
-      }
+      className={`${css.classSlot} ${slotEmpty ? css.highlight : ""} ${reqHighlighted ? css.highlight2 : ""}`}
       disabled={!classToAdd && !classSlot}
       onClick={() => {
         // check if class to add
