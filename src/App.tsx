@@ -29,30 +29,36 @@ export default function App() {
   // The syntax is very similar to HTML
   // TypeScript expressions can be embedded within {} scopes, like 'title' below
 
-  const disclaimerShown = useGlobalStore((s) => s.disclaimerShown);
-  const markDiscShown = useGlobalStore((s) => s.markDiscShown);
+  const isNewUser = useGlobalStore((s) => s.isNewUser);
+  const markNewUser = useGlobalStore((s) => s.markNewUser);
   const setModalContent = useGlobalStore((s) => s.setModalContent);
 
   // Use effect runs once on mount
   useEffect(() => {
-    if (!disclaimerShown) {
-      setModalContent("disclaimerModalKey", (
+    if (isNewUser) {
+      setModalContent(
+        "disclaimerModalKey",
         <div>
           <h2>Disclaimer:</h2>
-          <p>This program counts courses once. Refer to your academic advisor about counting courses towards multiple requirements.</p>
+          <p>
+            This program counts courses once. Refer to your academic advisor
+            about counting courses towards multiple requirements.
+          </p>
           <div className={m_css.modalRow}>
-              <button className={`btn ${m_css.modalBtn}`}
-                  onClick={() => {
-                      setModalContent("disclaimerModalKey", null);
-                  }}
-              >Close</button>
+            <button
+              className={`btn ${m_css.modalBtn}`}
+              onClick={() => {
+                setModalContent("disclaimerModalKey", null);
+              }}
+            >
+              Close
+            </button>
           </div>
-      </div>
-      ));
-      markDiscShown();
+        </div>,
+      );
+      markNewUser();
     }
-  }, [disclaimerShown, markDiscShown, setModalContent]);
-
+  }, [isNewUser, markNewUser, setModalContent]);
 
   return (
     // This is how you apply a style from a css module to an element

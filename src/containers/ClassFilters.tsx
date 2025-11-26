@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   classes,
   degree,
@@ -7,10 +8,29 @@ import {
 import css from "./../styles/ClassBrowser.module.css";
 
 export default function ClassFilters() {
+  const setClassSearchFilter = useGlobalStore((s) => s.setClassSearchFilter);
+  const [radioSelectionModified, setRadioSelectionModified] = useState(false);
+
+  const reqs = [
+    {
+      name: "All",
+      classes: degree.reqs.flatMap((r) => r.classes),
+    },
+    ...degree.reqs,
+  ];
+
   return (
     <div className={css.filters}>
-      {degree.reqs.map((req, i) => (
-        <Filter key={i} req={req} />
+      {reqs.map((req, i) => (
+        <Filter
+          key={i}
+          req={req}
+          checked={radioSelectionModified ? undefined : i === 0}
+          onToggled={(checked) => {
+            if (checked) setClassSearchFilter(i === 0 ? undefined : req);
+            setRadioSelectionModified(true);
+          }}
+        />
       ))}
     </div>
   );
@@ -18,9 +38,11 @@ export default function ClassFilters() {
 
 interface FilterProps {
   req: DegreeRequirement;
+  checked?: boolean;
+  onToggled: (value: boolean) => void;
 }
 
-function Filter({ req }: FilterProps) {
+function Filter({ req, checked, onToggled }: FilterProps) {
   const classSlots = useGlobalStore((s) => s.classSlots);
 
   let totalCredits = 0;
@@ -29,7 +51,7 @@ function Filter({ req }: FilterProps) {
     else totalCredits += cls.totalCredits;
   }
 
-  const countedClasses: Set<string> = new Set();
+  const countedClasses = new Set<string>();
   let completedCredits = 0;
   for (const cls of req.classes) {
     if (completedCredits >= totalCredits) break;
@@ -55,7 +77,7 @@ function Filter({ req }: FilterProps) {
         const matchingPrefix = cls.prefixes.find((p) =>
           slot.classId.startsWith(p),
         );
-        if (!matchingPrefix) continue;
+        if (cls.prefixes.length > 0 && !matchingPrefix) continue;
 
         const classNumber = Number(slot.classId.slice(slot.classId.length - 4));
         if (classNumber >= cls.atOrAbove) {
@@ -69,7 +91,13 @@ function Filter({ req }: FilterProps) {
   return (
     <div className={css.filter}>
       <div className={css.filterToggle}>
-        <input type="checkbox" id={req.name} name={req.name} />
+        <input
+          type="radio"
+          id={req.name}
+          name={"class-filter"}
+          checked={checked}
+          onChange={(e) => onToggled(e.target.checked)}
+        />
         <label htmlFor={req.name}>{req.name.replace("Requirement", "")}</label>
       </div>
       <div className={css.filterProgress}>

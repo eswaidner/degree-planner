@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { classes, useGlobalStore, type Class } from "../state";
 import css from "./../styles/ClassBrowser.module.css";
 import Fuse, { type FuseResult } from "fuse.js";
+import { classInRequirement } from "../utils";
 
 const MIN_SEARCH_LEN = 2;
 
@@ -9,17 +10,28 @@ export default function ClassSearch() {
   const [searchResults, setSearchResults] = useState<FuseResult<Class>[]>([]);
   const [searchString, setSeachString] = useState<string | null>(null);
   const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
+  const classSearchFilter = useGlobalStore((s) => s.classSearchFilter);
+
+  const filteredClasses = useMemo(
+    () =>
+      classSearchFilter
+        ? Object.values(classes).filter((c) =>
+            classInRequirement(c.number, classSearchFilter),
+          )
+        : Object.values(classes),
+    [classSearchFilter],
+  );
 
   const searchEngine = useMemo(
     () =>
-      new Fuse(Object.values(classes), {
+      new Fuse(filteredClasses, {
         keys: [{ name: "number" }, { name: "name" }],
         ignoreLocation: true,
         includeMatches: true,
         minMatchCharLength: 2,
         threshold: 0.1,
       }),
-    [],
+    [filteredClasses],
   );
 
   useEffect(() => {
@@ -53,9 +65,7 @@ export default function ClassSearch() {
       <div className={css.searchResults}>
         {searchResults.length > 0 || searchString
           ? searchResults.map((r, i) => <ClassThumbnail key={i} cls={r.item} />)
-          : Object.values(classes).map((c, i) => (
-              <ClassThumbnail key={i} cls={c} />
-            ))}
+          : filteredClasses.map((c, i) => <ClassThumbnail key={i} cls={c} />)}
       </div>
     </div>
   );

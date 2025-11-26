@@ -95,9 +95,13 @@ export interface State {
   /** Sets modal content for a unique key. */
   setModalContent: (key: string, content: ReactNode) => void;
 
-  /** Tracks if Disclaimer modal was shown on page load up */
-  disclaimerShown: boolean;
-  markDiscShown: () => void;
+  /** Tracks if this is the first time this browser had opened the app. */
+  isNewUser: boolean;
+  markNewUser: () => void;
+
+  /** A degree requirement to filter classes by. No filter applied if undefined. */
+  classSearchFilter: DegreeRequirement | undefined;
+  setClassSearchFilter: (req?: DegreeRequirement) => void;
 }
 
 /** Hook that reads a field from the global store.
@@ -280,8 +284,11 @@ export const useGlobalStore = create<State>()(
         }));
       },
 
-      disclaimerShown: false,
-      markDiscShown: () => set({ disclaimerShown: true }),
+      isNewUser: true,
+      markNewUser: () => set({ isNewUser: false }),
+
+      classSearchFilter: undefined,
+      setClassSearchFilter: (req) => set({ classSearchFilter: req }),
     }),
 
     {
@@ -295,7 +302,7 @@ export const useGlobalStore = create<State>()(
         classSlots: state.classSlots,
         degreeAuditUploaded: state.degreeAuditUploaded,
         degreeAuditYears: state.degreeAuditYears,
-        disclaimerShown: state.disclaimerShown,
+        isNewUser: state.isNewUser,
       }),
     },
   ),
