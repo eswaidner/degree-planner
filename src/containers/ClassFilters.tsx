@@ -25,9 +25,11 @@ export default function ClassFilters() {
         <Filter
           key={i}
           req={req}
+          reqIndex={i - 1}
+          all={i === 0}
           checked={radioSelectionModified ? undefined : i === 0}
           onToggled={(checked) => {
-            if (checked) setClassSearchFilter(i === 0 ? undefined : req);
+            if (checked) setClassSearchFilter(i === 0 ? undefined : i - 1);
             setRadioSelectionModified(true);
           }}
         />
@@ -38,11 +40,13 @@ export default function ClassFilters() {
 
 interface FilterProps {
   req: DegreeRequirement;
+  reqIndex: number;
+  all: boolean;
   checked?: boolean;
   onToggled: (value: boolean) => void;
 }
 
-function Filter({ req, checked, onToggled }: FilterProps) {
+function Filter({ req, reqIndex, all, checked, onToggled }: FilterProps) {
   const classSlots = useGlobalStore((s) => s.classSlots);
 
   let totalCredits = 0;
@@ -51,40 +55,11 @@ function Filter({ req, checked, onToggled }: FilterProps) {
     else totalCredits += cls.totalCredits;
   }
 
-  const countedClasses = new Set<string>();
   let completedCredits = 0;
-  for (const cls of req.classes) {
-    if (completedCredits >= totalCredits) break;
-
-    // if class set, apply classes that match a class in the class set
-    if (Array.isArray(cls)) {
-      const completedClassId = cls.find((c) =>
-        classSlots.find(
-          (slot) => slot?.classId === c && !countedClasses.has(slot.classId),
-        ),
-      );
-
-      if (completedClassId) {
-        completedCredits += classes[completedClassId].credits;
-        countedClasses.add(completedClassId);
-      }
-    } else {
-      // apply classes that match the class scope
-      for (const slot of classSlots) {
-        if (completedCredits >= totalCredits) break;
-        if (!slot || countedClasses.has(slot.classId)) continue;
-
-        const matchingPrefix = cls.prefixes.find((p) =>
-          slot.classId.startsWith(p),
-        );
-        if (cls.prefixes.length > 0 && !matchingPrefix) continue;
-
-        const classNumber = Number(slot.classId.slice(slot.classId.length - 4));
-        if (classNumber >= cls.atOrAbove) {
-          completedCredits += classes[slot.classId].credits;
-          countedClasses.add(slot.classId);
-        }
-      }
+  for (const slot of classSlots) {
+    if (!slot) continue;
+    if (all || slot.countsTowardsReqIndex === reqIndex) {
+      completedCredits += classes[slot.classId].credits;
     }
   }
 

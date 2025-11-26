@@ -3,7 +3,6 @@ import {
   CLASS_SLOTS_PER_YEAR,
   useGlobalStore,
 } from "../state";
-import { classInRequirement } from "../utils";
 import css from "./../styles/DegreePlanner.module.css";
 
 function AddClassBtn({ slotIndex }: { slotIndex: number }) {
@@ -19,8 +18,8 @@ function AddClassBtn({ slotIndex }: { slotIndex: number }) {
   const reqHighlighted =
     !classToAdd &&
     classSlot &&
-    classSearchFilter &&
-    classInRequirement(classSlot.classId, classSearchFilter);
+    classSearchFilter !== undefined &&
+    classSlot.countsTowardsReqIndex === classSearchFilter;
 
   return (
     <button

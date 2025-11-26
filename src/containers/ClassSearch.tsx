@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { classes, useGlobalStore, type Class } from "../state";
+import { classes, degree, useGlobalStore, type Class } from "../state";
 import css from "./../styles/ClassBrowser.module.css";
 import Fuse, { type FuseResult } from "fuse.js";
 import { classInRequirement } from "../utils";
@@ -14,9 +14,9 @@ export default function ClassSearch() {
 
   const filteredClasses = useMemo(
     () =>
-      classSearchFilter
+      classSearchFilter !== undefined
         ? Object.values(classes).filter((c) =>
-            classInRequirement(c.number, classSearchFilter),
+            classInRequirement(c.number, degree.reqs[classSearchFilter]),
           )
         : Object.values(classes),
     [classSearchFilter],

@@ -6,7 +6,7 @@ export const classes = classesJson as Record<string, Class>;
 
 import degreeJson from "../data/cs_bs_degree.json";
 import type { ReactNode } from "react";
-import { termToStartSlotIndex, termToYear } from "./utils";
+import { classInRequirement, termToStartSlotIndex, termToYear } from "./utils";
 export const degree = degreeJson as Degree;
 
 const DEFAULT_NUM_YEARS = 4;
@@ -54,6 +54,7 @@ export interface ClassScope {
 export interface ClassSlot {
   classId: string; // "CS 3300"
   auditSemester: string | null; // "FA24"
+  countsTowardsReqIndex?: number;
 }
 
 /** Structure of the global state store */
@@ -99,9 +100,9 @@ export interface State {
   isNewUser: boolean;
   markNewUser: () => void;
 
-  /** A degree requirement to filter classes by. No filter applied if undefined. */
-  classSearchFilter: DegreeRequirement | undefined;
-  setClassSearchFilter: (req?: DegreeRequirement) => void;
+  /** A degree requirement index to filter classes by. No filter applied if undefined. */
+  classSearchFilter?: number;
+  setClassSearchFilter: (reqIndex?: number) => void;
 }
 
 /** Hook that reads a field from the global store.
@@ -139,6 +140,13 @@ export const useGlobalStore = create<State>()(
       setClassSlot: (slotIndex, value) => {
         return set((s) => {
           const newClassSlots = [...s.classSlots];
+
+          if (value) {
+            value.countsTowardsReqIndex = degree.reqs.findIndex((r) =>
+              classInRequirement(value.classId, r),
+            );
+          }
+
           newClassSlots[slotIndex] = value;
           return { classSlots: newClassSlots };
         });
@@ -210,6 +218,9 @@ export const useGlobalStore = create<State>()(
             newClassSlots[slotIdx] = {
               classId: entry[0],
               auditSemester: entry[1],
+              countsTowardsReqIndex: degree.reqs.findIndex((r) =>
+                classInRequirement(entry[0], r),
+              ),
             };
           }
 
@@ -288,12 +299,12 @@ export const useGlobalStore = create<State>()(
       markNewUser: () => set({ isNewUser: false }),
 
       classSearchFilter: undefined,
-      setClassSearchFilter: (req) => set({ classSearchFilter: req }),
+      setClassSearchFilter: (reqIndex) => set({ classSearchFilter: reqIndex }),
     }),
 
     {
       name: "globalStore",
-      version: 1, // increment this every state-breaking change (invalidates cache)
+      version: 3, // increment this every state-breaking change (invalidates cache)
 
       partialize: (state) => ({
         // define persistent fields
