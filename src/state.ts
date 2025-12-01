@@ -126,6 +126,9 @@ export const useGlobalStore = create<State>()(
       removeYear: () => {
         return set((s) => {
           if (s.numYears <= 1) return s;
+          if (s.degreeAuditUploaded && s.numYears <= s.degreeAuditYears) {
+            return s;
+          }
 
           const newClassSlots = [...s.classSlots];
           newClassSlots.splice(s.classSlots.length - CLASS_SLOTS_PER_YEAR);

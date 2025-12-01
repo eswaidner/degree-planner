@@ -66,6 +66,15 @@
 
 .classSlot {
   flex-grow: 1;
+  position: relative;
+}
+
+.warningIcon {
+  position: absolute;
+  left: 15px;
+  color: orange;
+  border-radius: 3px;
+  transform: translateY(-2px);
 }
 
 .highlight {
@@ -75,4 +84,8 @@
 .highlight2 {
   color: var(--hl-1);
   font-weight: bold;
+}
+
+.selected {
+  background-color: var(--fg-3);
 }
