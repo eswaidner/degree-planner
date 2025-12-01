@@ -27,6 +27,7 @@ export function termToYear(term: string): number {
   return Number(term.slice(2)) + 2000;
 }
 
+/** Checks if a class can apply to a degree requirement. */
 export function classInRequirement(
   classId: string,
   req: DegreeRequirement,
@@ -49,6 +50,7 @@ export function classInRequirement(
   return false;
 }
 
+/** Checks if there are more than one instances of this class in the degree plan. */
 export function isDuplicateClass(
   classId: string,
   classSlots: (ClassSlot | null)[],
@@ -65,6 +67,7 @@ export function isDuplicateClass(
   return false;
 }
 
+/** Returns the type of semester a class slot belongs to. */
 export function slotIndexToSemester(slotIndex: number): "spring" | "fall" {
   if ((slotIndex % CLASS_SLOTS_PER_YEAR) / CLASS_SLOTS_PER_SEMESTER < 1) {
     return "fall";
@@ -73,6 +76,7 @@ export function slotIndexToSemester(slotIndex: number): "spring" | "fall" {
   }
 }
 
+/** Checks if a class in the degree plan is typically offered in its current semester. */
 export function isClassOfferedInSemester(
   classId: string,
   slotIndex: number,

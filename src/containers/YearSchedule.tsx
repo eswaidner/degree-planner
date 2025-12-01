@@ -21,7 +21,12 @@ export default function YearlySchedule() {
   );
 }
 
-function Year({ year, startingSlot }: { year: number; startingSlot: number }) {
+interface YearProps {
+  year: number;
+  startingSlot: number;
+}
+
+function Year({ year, startingSlot }: YearProps) {
   const nextYear = year + 1;
   return (
     <div className={css.year}>
@@ -42,20 +47,13 @@ function Year({ year, startingSlot }: { year: number; startingSlot: number }) {
   );
 }
 
-function Semester({
-  semester,
-  startingSlot,
-  year,
-}: {
+interface SemesterProps {
   semester: string;
   startingSlot: number;
   year: number;
-}) {
-  const classSlots = Array.from(
-    { length: CLASS_SLOTS_PER_SEMESTER },
-    (_, i) => i,
-  );
+}
 
+function Semester({ semester, startingSlot, year }: SemesterProps) {
   return (
     <div className={css.semester}>
       <h2>
@@ -63,15 +61,21 @@ function Semester({
           {semester} {year}
         </center>
       </h2>
-      {classSlots.map((classSlot, i) => {
-        const slotIndex = startingSlot + classSlot;
-        return <ClassSlot key={i} slotIndex={slotIndex} />;
-      })}
+      {Array(CLASS_SLOTS_PER_SEMESTER)
+        .fill(0)
+        .map((_, i) => {
+          const slotIndex = startingSlot + i;
+          return <ClassSlot key={i} slotIndex={slotIndex} />;
+        })}
     </div>
   );
 }
 
-function ClassSlot({ slotIndex }: { slotIndex: number }) {
+interface ClassSlotProps {
+  slotIndex: number;
+}
+
+function ClassSlot({ slotIndex }: ClassSlotProps) {
   const classToAdd = useGlobalStore((s) => s.classToAdd);
   const setClassToAdd = useGlobalStore((s) => s.setClassToAdd);
   const classSlots = useGlobalStore((s) => s.classSlots);

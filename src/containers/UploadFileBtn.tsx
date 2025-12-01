@@ -3,13 +3,15 @@ import m_css from "./../styles/Modal.module.css";
 import { useGlobalStore } from "../state";
 
 // Check if selected element is of type File
-interface Props {
+interface UploadDegreeBtnProps {
   onFileSelected: (file: File) => void;
 }
 
 // If a file is selected (event.target.files?.[0]), verify through Props
 // Have to clear <input> style (display: none) and override with <label>
-export default function UploadDegreeBtn({ onFileSelected }: Props) {
+export default function UploadDegreeBtn({
+  onFileSelected,
+}: UploadDegreeBtnProps) {
   const setModalContent = useGlobalStore((s) => s.setModalContent);
 
   return (
@@ -20,34 +22,30 @@ export default function UploadDegreeBtn({ onFileSelected }: Props) {
         id="upload-degree-input" /* reference for reading file in fileInput */
         style={{ display: "none" }}
         onChange={(event) => {
-          /*If 1 file of type file is selected, set file var to selected file */
+          /* If 1 file of type file is selected, set file var to selected file */
           const file = event.target.files?.[0];
+          if (!file) return;
 
-          if (file) {
-            if (file.size === 0) {
-              setModalContent(
-                "emptyFileWarning",
-                <div>
-                  <h2>Warning: Empty File</h2>
-                  <div className={m_css.modalRow}>
-                    <button
-                      className={`btn ${m_css.modalBtn}`}
-                      onClick={() => {
-                        setModalContent("emptyFileWarning", null);
-                      }}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>,
-              );
-
-              console.log("File is empty");
-              return;
-            }
-
+          if (file.size === 0) {
+            setModalContent(
+              "emptyFileWarning",
+              <div>
+                <h2>Warning: Empty File</h2>
+                <div className={m_css.modalRow}>
+                  <button
+                    className={`btn ${m_css.modalBtn}`}
+                    onClick={() => {
+                      setModalContent("emptyFileWarning", null);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>,
+            );
+          } else {
             onFileSelected(file);
-          } // if file END
+          }
         }}
       />
       <label

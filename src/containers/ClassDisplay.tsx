@@ -109,6 +109,8 @@ function AddClassButton({ cls }: AddClassButtonProps) {
     : null;
   const fromAudit = classSlot?.auditSemester != null;
 
+  // show add button if class selected from course browser
+  // otherwise show remove button if class selected from degree plan
   if (selectedFromSlot) {
     return (
       <button

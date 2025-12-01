@@ -1,5 +1,3 @@
-// import { useState, useRef } from "react";
-// import { useGlobalStore } from "./state";
 import "./index.css";
 import css from "./styles/App.module.css";
 import m_css from "./styles/Modal.module.css";
@@ -40,7 +38,7 @@ export default function App() {
         "disclaimerModalKey",
         <div>
           <h2>Disclaimer:</h2>
-          <p>
+          <p className={css.disclaimerModalBody}>
             This program counts courses once. Refer to your academic advisor
             about counting courses towards multiple requirements.
           </p>
