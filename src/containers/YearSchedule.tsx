@@ -77,6 +77,9 @@ function ClassSlot({ slotIndex }: { slotIndex: number }) {
   const classSlots = useGlobalStore((s) => s.classSlots);
   const setClassSlot = useGlobalStore((s) => s.setClassSlot);
   const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
+  const selectedClassSlotIndex = useGlobalStore(
+    (s) => s.selectedClassSlotIndex,
+  );
   const classSearchFilter = useGlobalStore((s) => s.classSearchFilter);
 
   const classSlot = classSlots[slotIndex];
@@ -97,15 +100,21 @@ function ClassSlot({ slotIndex }: { slotIndex: number }) {
 
     // display warning if class not offered in semester
     if (!classSlot.auditSemester) {
-      if (isClassOfferedInSemester(classSlot.classId, slotIndex)) {
+      if (!isClassOfferedInSemester(classSlot.classId, slotIndex)) {
         showWarning = true;
       }
     }
   }
 
+  const selected = selectedClassSlotIndex === slotIndex;
+
   return (
     <button
-      className={`${css.classSlot} ${slotEmpty ? css.highlight : ""} ${reqHighlighted ? css.highlight2 : ""}`}
+      className={`
+        ${css.classSlot} ${slotEmpty ? css.highlight : ""}
+        ${reqHighlighted ? css.highlight2 : ""}
+        ${selected ? css.selected : ""}
+        `}
       disabled={!classToAdd && !classSlot}
       onClick={() => {
         // check if class to add
@@ -116,6 +125,7 @@ function ClassSlot({ slotIndex }: { slotIndex: number }) {
               classId: classToAdd,
               auditSemester: null,
             });
+            setSelectedClass(classToAdd, slotIndex);
             setClassToAdd(null);
           }
         } else if (classSlot) {

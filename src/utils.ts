@@ -77,5 +77,9 @@ export function isClassOfferedInSemester(
   classId: string,
   slotIndex: number,
 ): boolean {
-  return classes[classId].offered === slotIndexToSemester(slotIndex);
+  const offered = classes[classId].offered;
+
+  if (offered === "always") return true;
+  else if (offered === "rarely" || offered === "unknown") return false;
+  else return classes[classId].offered === slotIndexToSemester(slotIndex);
 }

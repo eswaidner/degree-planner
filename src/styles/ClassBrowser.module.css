@@ -118,3 +118,30 @@
 .bold {
   font-weight: bold;
 }
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 2px solid orange;
+  border-radius: var(--rc-1);
+  background-color: var(--fg-0);
+  padding: 10px;
+}
+
+.warning {
+  display: flex;
+  /*align-items: top;*/
+  gap: 5px;
+}
+
+.warningTitle {
+  font-weight: bold;
+  min-width: 9rem;
+}
+
+.warningIcon {
+  flex-shrink: 0;
+  color: orange;
+  margin-right: 7px;
+}

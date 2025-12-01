@@ -85,3 +85,7 @@
   color: var(--hl-1);
   font-weight: bold;
 }
+
+.selected {
+  background-color: var(--fg-3);
+}
