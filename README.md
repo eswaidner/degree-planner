@@ -25,6 +25,33 @@ For state that is global and/or persistent between app reloads, we use the React
 ### Naming Conventions
 In general, we follow the standard naming conventions for TypeScript and React. Files use snake_case naming except for components and their CSS modules, which use PascalCase. Additionally, we use camelCase for CSS rules due to how CSS modules work (the typical kebab-case convention for CSS rules is not legal TypeScript syntax).
 
+### Files
+| File | Description |
+|---|---|
+| src/index.html | Application HTML entrypoint, runs main.tsx. |
+| src/index.css | Global CSS rules and default style resets. |
+| src/state.ts | Global state store and state modification actions. |
+| src/utils.ts | General app utility functions. |
+| src/main.tsx | React entry point, renders App component. |
+| src/App.tsx | Root of the React component tree. |
+| src/styles/App.module.css | CSS rules for the App component. |
+| src/containers/DegreePlanner.tsx | Container for the ButtonBar and YearSchedule. |
+| src/styles/DegreePlanner.module.css | CSS rules for the degree plan components. |
+| src/containers/ButtonBar.tsx | The button bar at the top of the screen. |
+| src/containers/UploadFileBtn.tsx | The upload file button for degree audit uploading. |
+| src/containers/ResetButton.tsx | The reset button for degree plan resetting. |
+| src/containers/YearSchedule.tsx | The degree plan display of academic years/semesters. |
+| src/containers/ClassBrowser.tsx | Container for the class search, filters, and display. |
+| src/styles/ClassBrowser.module.css | CSS rules for the class search, filters, and display. |
+| src/containers/ClassSearch.tsx | List of classes and search bar to find classes by name. |
+| src/containers/ClassFilters.tsx | List of degree requirement filters to down-select classes. |
+| src/containers/ClassDisplay.tsx | Displays selected class description and metadata. |
+| src/containers/Modal.tsx | Utility to display content on top of the main interface. |
+| src/containers/Modal.module.css | CSS rules for the Modal system. |
+
+
+
+
 ### Licensing
 This project is distributed under the MIT permissive open source license. See [LICENSE](./LICENSE) for details.
 
