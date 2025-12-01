@@ -1,6 +1,8 @@
 import {
   CLASS_SLOTS_PER_SEMESTER,
   CLASS_SLOTS_PER_YEAR,
+  classes,
+  type ClassSlot,
   type DegreeRequirement,
 } from "./state";
 
@@ -45,4 +47,35 @@ export function classInRequirement(
   }
 
   return false;
+}
+
+export function isDuplicateClass(
+  classId: string,
+  classSlots: (ClassSlot | null)[],
+): boolean {
+  let counter = 0;
+  for (const slot of classSlots) {
+    if (!slot) continue;
+    if (slot.classId === classId) {
+      if (counter === 1) return true;
+      else counter += 1;
+    }
+  }
+
+  return false;
+}
+
+export function slotIndexToSemester(slotIndex: number): "spring" | "fall" {
+  if ((slotIndex % CLASS_SLOTS_PER_YEAR) / CLASS_SLOTS_PER_SEMESTER < 1) {
+    return "fall";
+  } else {
+    return "spring";
+  }
+}
+
+export function isClassOfferedInSemester(
+  classId: string,
+  slotIndex: number,
+): boolean {
+  return classes[classId].offered === slotIndexToSemester(slotIndex);
 }

@@ -66,6 +66,15 @@
 
 .classSlot {
   flex-grow: 1;
+  position: relative;
+}
+
+.warningIcon {
+  position: absolute;
+  left: 15px;
+  color: orange;
+  border-radius: 3px;
+  transform: translateY(-2px);
 }
 
 .highlight {

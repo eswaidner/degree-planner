@@ -1,9 +1,11 @@
+import { PiWarningBold } from "react-icons/pi";
 import {
   CLASS_SLOTS_PER_SEMESTER,
   CLASS_SLOTS_PER_YEAR,
   useGlobalStore,
 } from "../state";
 import css from "./../styles/DegreePlanner.module.css";
+import { isClassOfferedInSemester, isDuplicateClass } from "../utils";
 
 export default function YearlySchedule() {
   const startYear = useGlobalStore((s) => s.startYear);
@@ -72,10 +74,12 @@ function Semester({
 function ClassSlot({ slotIndex }: { slotIndex: number }) {
   const classToAdd = useGlobalStore((s) => s.classToAdd);
   const setClassToAdd = useGlobalStore((s) => s.setClassToAdd);
-  const classSlot = useGlobalStore((s) => s.classSlots[slotIndex]);
+  const classSlots = useGlobalStore((s) => s.classSlots);
   const setClassSlot = useGlobalStore((s) => s.setClassSlot);
   const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
   const classSearchFilter = useGlobalStore((s) => s.classSearchFilter);
+
+  const classSlot = classSlots[slotIndex];
 
   const slotEmpty = classToAdd && classSlot == null;
 
@@ -84,6 +88,20 @@ function ClassSlot({ slotIndex }: { slotIndex: number }) {
     classSlot &&
     classSearchFilter !== undefined &&
     classSlot.countsTowardsReqIndex === classSearchFilter;
+
+  let showWarning = false;
+
+  if (classSlot) {
+    // display warning if duplicate class
+    if (isDuplicateClass(classSlot.classId, classSlots)) showWarning = true;
+
+    // display warning if class not offered in semester
+    if (!classSlot.auditSemester) {
+      if (isClassOfferedInSemester(classSlot.classId, slotIndex)) {
+        showWarning = true;
+      }
+    }
+  }
 
   return (
     <button
@@ -106,6 +124,7 @@ function ClassSlot({ slotIndex }: { slotIndex: number }) {
       }}
     >
       {classSlot ? <>{classSlot.classId}</> : "-"}
+      {showWarning && <PiWarningBold className={css.warningIcon} size={22} />}
     </button>
   );
 }
