@@ -50,11 +50,13 @@ function AddClassButton({ cls }: AddClassButtonProps) {
   const setClassSlot = useGlobalStore((s) => s.setClassSlot);
   const setSelectedClass = useGlobalStore((s) => s.setSelectedClass);
 
-  const fromSlot = selectedClassSlotIndex != null;
-  const classSlot = fromSlot ? classSlots[selectedClassSlotIndex] : null;
+  const selectedFromSlot = selectedClassSlotIndex !== null;
+  const classSlot = selectedFromSlot
+    ? classSlots[selectedClassSlotIndex]
+    : null;
   const fromAudit = classSlot?.auditSemester != null;
 
-  if (fromSlot && !fromAudit) {
+  if (selectedFromSlot) {
     return (
       <button
         className={css.addButton}
@@ -64,21 +66,24 @@ function AddClassButton({ cls }: AddClassButtonProps) {
             setSelectedClass(null);
           }
         }}
+        disabled={fromAudit}
       >
         Remove Class
       </button>
     );
+  } else {
+    return (
+      <button
+        className={css.addButton}
+        onClick={() => {
+          if (classToAdd) setClassToAdd(null);
+          else if (cls) setClassToAdd(cls.number);
+        }}
+      >
+        {classToAdd ? "Cancel" : "Add Class"}
+      </button>
+    );
   }
-  return (
-    <button
-      className={css.addButton}
-      onClick={() => {
-        if (classToAdd) setClassToAdd(null);
-        else if (cls) setClassToAdd(cls.number);
-      }}
-      disabled={fromSlot && fromAudit}
-    >
-      {classToAdd ? "Cancel" : "Add Class"}
-    </button>
-  );
+
+  return <></>;
 }

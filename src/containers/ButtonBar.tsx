@@ -3,21 +3,33 @@ import UploadDegreeBtn from "./UploadFileBtn";
 import { useGlobalStore } from "../state";
 import ResetButton from "./ResetButton";
 
+export default function ButtonBar() {
+  const uploadDegreeAudit = useGlobalStore((s) => s.uploadDegreeAudit);
+
+  return (
+    <div className={css.buttonBar}>
+      <UploadDegreeBtn
+        onFileSelected={(file) => {
+          file
+            .text()
+            .then(uploadDegreeAudit)
+            .catch(() => {
+              console.log("Error: failed to load file");
+            });
+        }}
+      />
+      <SelectDegreeBtn />
+      <ResetButton />
+      <AddYearBtn />
+      <RemoveYearBtn />
+    </div>
+  );
+}
+
 function SelectDegreeBtn() {
   return (
     <button className={`btn ${css.btnBarButtons}`}>
       Degree: Computer Science (BS)
-    </button>
-  );
-}
-
-function ExportPlanBtn() {
-  function handleClick() {
-    alert("Export Degree Plan button clicked");
-  }
-  return (
-    <button onClick={handleClick} className={`btn ${css.btnBarButtons}`}>
-      Export Plan
     </button>
   );
 }
@@ -41,30 +53,3 @@ function RemoveYearBtn() {
     </button>
   );
 }
-
-const ButtonBar: React.FC = () => {
-  const uploadDegreeAudit = useGlobalStore((s) => s.uploadDegreeAudit);
-
-  return (
-    <div className={css.buttonBar}>
-      <UploadDegreeBtn
-        onFileSelected={(file) => {
-          //TODO modal confirm
-          file
-            .text()
-            .then(uploadDegreeAudit)
-            .catch(() => {
-              console.log("Error: failed to load file");
-            });
-        }}
-      />
-      <SelectDegreeBtn />
-      <ExportPlanBtn />
-      <ResetButton />
-      <AddYearBtn />
-      <RemoveYearBtn />
-    </div>
-  );
-};
-
-export default ButtonBar;
