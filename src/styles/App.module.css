@@ -10,3 +10,7 @@ not conflict with styles from other css files. */
   width: 100%;
   height: 100%;
 }
+
+.disclaimerModalBody {
+  text-align: center;
+}

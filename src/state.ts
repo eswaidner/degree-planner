@@ -1,12 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-import classesJson from "../data/classes.json";
-export const classes = classesJson as Record<string, Class>;
-
-import degreeJson from "../data/cs_bs_degree.json";
 import type { ReactNode } from "react";
 import { classInRequirement, termToStartSlotIndex, termToYear } from "./utils";
+
+import classesJson from "../data/classes.json";
+import degreeJson from "../data/cs_bs_degree.json";
+
+/// Data collected from the public UCCS academic catalog.
+export const classes = classesJson as Record<string, Class>;
+
+/// Manually extracted data from UCCS CS B.S. degree plan.
 export const degree = degreeJson as Degree;
 
 const DEFAULT_NUM_YEARS = 4;
@@ -72,8 +75,13 @@ export interface State {
   classSlots: (ClassSlot | null)[];
   setClassSlot: (slotIndex: number, value: ClassSlot | null) => void;
 
+  /** Whether or not a degree audit has been uploaded. */
   degreeAuditUploaded: boolean;
+
+  /** The number of years covered by the degree audit. */
   degreeAuditYears: number;
+
+  /** Loads UCCS degree audit class information from an HTML file format. */
   uploadDegreeAudit: (html: string) => void;
 
   /** The current selected class */
@@ -90,6 +98,7 @@ export interface State {
   /** Resets the degree plan, preserving degree audit imports if applicable */
   resetDegreePlan: () => void;
 
+  /** Unique identifier for an open modal. */
   modalKey?: string;
   modalContent: ReactNode;
 
@@ -109,8 +118,9 @@ export interface State {
  * Creates a reactive dependency on the field. */
 export const useGlobalStore = create<State>()(
   persist(
+    // Provides default values for state fields and implementations for actions
     (set, get) => ({
-      numYears: 4, //DEFAULT_NUM_YEARS,
+      numYears: DEFAULT_NUM_YEARS,
       startYear: new Date().getFullYear(),
 
       addYear: () => {
@@ -126,6 +136,9 @@ export const useGlobalStore = create<State>()(
       removeYear: () => {
         return set((s) => {
           if (s.numYears <= 1) return s;
+          if (s.degreeAuditUploaded && s.numYears <= s.degreeAuditYears) {
+            return s;
+          }
 
           const newClassSlots = [...s.classSlots];
           newClassSlots.splice(s.classSlots.length - CLASS_SLOTS_PER_YEAR);
@@ -304,10 +317,10 @@ export const useGlobalStore = create<State>()(
 
     {
       name: "globalStore",
-      version: 3, // increment this every state-breaking change (invalidates cache)
+      version: 4, // increment this every state-breaking change (invalidates cache)
 
       partialize: (state) => ({
-        // define persistent fields
+        // define persistent state fields
         numYears: state.numYears,
         startYear: state.startYear,
         classSlots: state.classSlots,
